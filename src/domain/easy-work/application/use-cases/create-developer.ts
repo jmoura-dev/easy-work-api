@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { EmailAlreadyExists } from './errors/email-already-exists-error'
 import { DevelopersRepository } from '../repositories/developers-repository'
-import { Developer } from '../../enterprise/entities/developer'
+import { Developer } from '../../enterprise/entities/user-developer'
 
 interface CreateDeveloperUseCaseRequest {
   name: string

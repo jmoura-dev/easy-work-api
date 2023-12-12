@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { DevelopersRepository } from '../repositories/developers-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Developer } from '../../enterprise/entities/developer'
+import { Developer } from '../../enterprise/entities/user-developer'
 
 interface EditDeveloperDataUseCaseRequest {
   name?: string

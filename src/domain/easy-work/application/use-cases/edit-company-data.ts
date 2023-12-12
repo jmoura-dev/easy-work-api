@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { CompaniesRepository } from '../repositories/companies-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Company } from '../../enterprise/entities/company'
+import { Company } from '../../enterprise/entities/user-company'
 
 interface EditCompanyDataUseCaseRequest {
   name?: string

@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { EmailAlreadyExists } from './errors/email-already-exists-error'
 import { CompaniesRepository } from '../repositories/companies-repository'
-import { Company } from '../../enterprise/entities/company'
+import { Company } from '../../enterprise/entities/user-company'
 
 interface CreateCompanyUseCaseRequest {
   name: string

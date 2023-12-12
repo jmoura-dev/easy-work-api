@@ -1,5 +1,5 @@
 import { CompaniesRepository } from '@/domain/easy-work/application/repositories/companies-repository'
-import { Company } from '@/domain/easy-work/enterprise/entities/company'
+import { Company } from '@/domain/easy-work/enterprise/entities/user-company'
 
 export class InMemoryCompaniesRepository implements CompaniesRepository {
   public items: Company[] = []

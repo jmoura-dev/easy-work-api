@@ -1,18 +1,15 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { User, UserProps } from './user'
 
-export interface DeveloperProps {
-  name: string
-  email: string
-  password: string
+export interface DeveloperProps extends UserProps {
   avatar?: string | null
   price_per_hour?: string | null
   occupation_area: string
   available_for_contract?: boolean
 }
 
-export class Developer extends Entity<DeveloperProps> {
+export class Developer extends User<DeveloperProps> {
   get name() {
     return this.props.name
   }

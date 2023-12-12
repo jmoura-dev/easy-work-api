@@ -1,5 +1,5 @@
 import { DevelopersRepository } from '@/domain/easy-work/application/repositories/developers-repository'
-import { Developer } from '@/domain/easy-work/enterprise/entities/developer'
+import { Developer } from '@/domain/easy-work/enterprise/entities/user-developer'
 
 export class InMemoryDevelopersRepository implements DevelopersRepository {
   public items: Developer[] = []
