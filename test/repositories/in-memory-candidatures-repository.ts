@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { CandidaturesRepository } from '@/domain/easy-work/application/repositories/candidatures-repository'
 import { Candidature } from '@/domain/easy-work/enterprise/entities/candidature'
@@ -34,5 +35,7 @@ export class InMemoryCandidaturesRepository implements CandidaturesRepository {
     const itemIndex = this.items.findIndex((item) => item.id === candidature.id)
 
     this.items[itemIndex] = candidature
+
+    DomainEvents.dispatchEventsForAggregate(candidature.id)
   }
 }

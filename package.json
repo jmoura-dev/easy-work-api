@@ -5,6 +5,7 @@
   "author": "Jackson Moura",
   "private": true,
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "nest build",
     "start": "nest start",

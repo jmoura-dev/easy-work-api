@@ -1,6 +1,7 @@
-import { Entity } from '@/core/entities/entity'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { ChangeStatusEvent } from '../events/change-status-event'
 
 export interface CandidatureProps {
   developerId: UniqueEntityID
@@ -10,8 +11,8 @@ export interface CandidatureProps {
   updatedAt?: Date | null
 }
 
-export class Candidature extends Entity<CandidatureProps> {
-  get candidatureId() {
+export class Candidature extends AggregateRoot<CandidatureProps> {
+  get developerId() {
     return this.props.developerId
   }
 
@@ -26,6 +27,8 @@ export class Candidature extends Entity<CandidatureProps> {
   set status(status: string) {
     this.props.status = status
     this.touch()
+
+    this.addDomainEvent(new ChangeStatusEvent(this))
   }
 
   get createdAt() {
