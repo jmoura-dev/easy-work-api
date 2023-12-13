@@ -2,6 +2,8 @@
 /dist
 /node_modules
 FAKE-README.MD
+data
+.env
 
 # Logs
 logs
