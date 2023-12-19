@@ -4,7 +4,7 @@ import { User, UserProps } from './user'
 
 export interface DeveloperProps extends UserProps {
   avatar?: string | null
-  price_per_hour?: string | null
+  price_per_hour?: number | null
   occupation_area: string
   available_for_contract?: boolean
 }
@@ -42,7 +42,7 @@ export class Developer extends User<DeveloperProps> {
     return this.props.price_per_hour
   }
 
-  set price_per_hour(price_per_hour: string | null | undefined) {
+  set price_per_hour(price_per_hour: number | null | undefined) {
     this.props.price_per_hour = price_per_hour
   }
 

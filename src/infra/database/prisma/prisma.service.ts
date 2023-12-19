@@ -13,10 +13,10 @@ export class PrismaService
   }
 
   onModuleInit() {
-    return this.$connect
+    return this.$connect()
   }
 
   onModuleDestroy() {
-    return this.$disconnect
+    return this.$disconnect()
   }
 }

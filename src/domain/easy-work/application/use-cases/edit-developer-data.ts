@@ -7,7 +7,7 @@ interface EditDeveloperDataUseCaseRequest {
   name?: string
   email: string
   password?: string
-  price_per_hour?: string
+  price_per_hour?: number
   occupation_area?: string
   available_for_contract?: boolean
 }

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,113 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String  @id @default(uuid())
+  name        String
+  email       String  @unique
+  password    String
+  description String?
+  avatar      Avatar?
+
+  company      Company?
+  developer    Developer?
+  notification Notification[]
+
+  @@map("users")
+}
+
+model Developer {
+  id                    String                @id @default(uuid())
+  userId                String                @unique @map("user_id")
+  occupation_area       String
+  availabre_for_contact Boolean?              @default(false)
+  price_per_hour        Decimal?              @db.Decimal(6, 2)
+  user                  User                  @relation(fields: [userId], references: [id])
+  candidature           Candidature[]
+  developerTechnology   DeveloperTechnology[]
+}
+
+model Company {
+  id       String  @id @default(uuid())
+  userId   String  @unique @map("user_id")
+  cnpj     String
+  city     String?
+  site_url String?
+
+  user User  @relation(fields: [userId], references: [id])
+  job  Job[]
+
+  @@map("companies")
+}
+
+model Avatar {
+  id     String  @id @default(uuid())
+  title  String
+  url    String
+  userId String? @unique @map("user_id")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("avatars")
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  companyId   String   @unique @map("company_id")
+  title       String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  company     Company       @relation(fields: [companyId], references: [id])
+  candidature Candidature[]
+
+  @@map("jobs")
+}
+
+model Candidature {
+  id          String    @id @default(uuid())
+  developerId String    @unique @map("developer_id")
+  jobId       String    @unique @map("job_id")
+  status      String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  developer Developer @relation(fields: [developerId], references: [id])
+  job       Job       @relation(fields: [jobId], references: [id])
+
+  @@map("candidatures")
+}
+
+model Technology {
+  id                  String                @id @default(uuid())
+  name                String
+  developerTechnology DeveloperTechnology[]
+
+  @@map("technologies")
+}
+
+model DeveloperTechnology {
+  id           String @id @default(uuid())
+  developerId  String @map("developer_id")
+  technologyId String @map("technology_id")
+
+  developer  Developer  @relation(fields: [developerId], references: [id])
+  technology Technology @relation(fields: [technologyId], references: [id])
+
+  @@map("developerTechnologies")
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  recipientId String    @map("recipient_id")
+  title       String
+  content     String
+  readAt      DateTime? @map("read_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  recipient User @relation(fields: [recipientId], references: [id])
+
+  @@map("notifications")
 }
