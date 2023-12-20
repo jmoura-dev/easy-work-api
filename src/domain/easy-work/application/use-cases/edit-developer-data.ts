@@ -4,9 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { Developer } from '../../enterprise/entities/user-developer'
 
 interface EditDeveloperDataUseCaseRequest {
-  name?: string
-  email: string
-  password?: string
+  developerId: string
   price_per_hour?: number
   occupation_area?: string
   available_for_contract?: boolean
@@ -23,21 +21,17 @@ export class EditDeveloperDataUseCase {
   constructor(private developersRepository: DevelopersRepository) {}
 
   async execute({
-    name,
-    email,
-    password,
+    developerId,
     price_per_hour,
     occupation_area,
     available_for_contract,
   }: EditDeveloperDataUseCaseRequest): Promise<EditDeveloperDataUseCaseResponse> {
-    const developer = await this.developersRepository.findByEmail(email)
+    const developer = await this.developersRepository.findById(developerId)
 
     if (!developer) {
       return left(new ResourceNotFoundError())
     }
 
-    developer.name = name ?? developer.name
-    developer.password = password ?? developer.password
     developer.price_per_hour = price_per_hour ?? developer.price_per_hour
     developer.occupation_area = occupation_area ?? developer.occupation_area
     developer.available_for_contract =

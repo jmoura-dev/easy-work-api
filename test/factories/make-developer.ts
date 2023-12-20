@@ -11,9 +11,7 @@ export function makeDeveloper(
 ) {
   const developer = Developer.create(
     {
-      name: faker.lorem.word(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
+      userId: new UniqueEntityID(),
       occupation_area: faker.internet.userName(),
       ...override,
     },

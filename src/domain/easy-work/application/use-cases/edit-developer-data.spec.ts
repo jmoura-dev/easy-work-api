@@ -2,6 +2,7 @@ import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-develo
 import { makeDeveloper } from 'test/factories/make-developer'
 import { EditDeveloperDataUseCase } from './edit-developer-data'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: EditDeveloperDataUseCase
@@ -14,34 +15,35 @@ describe('Edit developer data Use case', () => {
 
   it('should be able update developer data', async () => {
     const developer = makeDeveloper({
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: '123456',
+      occupation_area: 'Backend',
     })
 
     inMemoryDevelopersRepository.items.push(developer)
 
     const result = await sut.execute({
-      name: 'João Doe',
-      email: 'john@example.com',
+      developerId: developer.id.toString(),
+      occupation_area: 'Frontend',
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryDevelopersRepository.items[0].name).toEqual('João Doe')
+    expect(inMemoryDevelopersRepository.items[0].occupation_area).toEqual(
+      'Frontend',
+    )
   })
 
-  it('should not be able to update developer data with invalid email', async () => {
-    const developer = makeDeveloper({
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: '123456',
-    })
+  it('should not be able to update developer data with invalid id', async () => {
+    const developer = makeDeveloper(
+      {
+        occupation_area: 'Backend',
+      },
+      new UniqueEntityID('developer-01'),
+    )
 
     inMemoryDevelopersRepository.items.push(developer)
 
     const result = await sut.execute({
-      name: 'João Doe',
-      email: 'invalid@email.com',
+      developerId: 'invalid-developer-id',
+      occupation_area: 'FullStack',
     })
 
     expect(result.isLeft()).toBe(true)

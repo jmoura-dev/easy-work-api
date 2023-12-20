@@ -18,16 +18,6 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
     return company
   }
 
-  async findByEmail(email: string): Promise<Company | null> {
-    const company = this.items.find((item) => item.email === email)
-
-    if (!company) {
-      return null
-    }
-
-    return company
-  }
-
   async save(company: Company): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === company.id)
 

@@ -1,55 +1,60 @@
 import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
 import { CreateDeveloperUseCase } from './create-developer'
 import { makeDeveloper } from 'test/factories/make-developer'
-import { EmailAlreadyExists } from './errors/email-already-exists-error'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { makeUser } from 'test/factories/make-user'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: CreateDeveloperUseCase
 
 describe('Create developer Use case', () => {
   beforeEach(() => {
     inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
-    sut = new CreateDeveloperUseCase(inMemoryDevelopersRepository)
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+
+    sut = new CreateDeveloperUseCase(
+      inMemoryDevelopersRepository,
+      inMemoryUsersRepository,
+    )
   })
 
   it('should be able to create a new developer', async () => {
+    const user = makeUser()
+
+    inMemoryUsersRepository.items.push(user)
+
     const developer = makeDeveloper({
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: '123456',
+      userId: user.id,
+      occupation_area: 'Backend',
     })
 
     const result = await sut.execute({
-      name: developer.name,
-      email: developer.email,
-      password: developer.password,
+      userId: developer.userId.toString(),
       occupation_area: developer.occupation_area,
     })
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryDevelopersRepository.items[0]).toMatchObject({
-      name: 'John Doe',
-      email: 'john@example.com',
+      occupation_area: 'Backend',
     })
   })
 
-  it('should not be able to create a new developer when email already exists', async () => {
+  it('should not be able to create a new developer when user do not exists', async () => {
     const developer = makeDeveloper({
-      name: 'John Doe',
-      email: 'john@example.com',
-      password: '123456',
+      userId: new UniqueEntityID('user-01'),
     })
 
     inMemoryDevelopersRepository.items.push(developer)
 
     const result = await sut.execute({
-      name: developer.name,
-      email: developer.email,
-      password: developer.password,
+      userId: 'invalid-user',
       occupation_area: developer.occupation_area,
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(EmailAlreadyExists)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

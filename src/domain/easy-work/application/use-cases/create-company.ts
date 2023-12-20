@@ -1,47 +1,45 @@
 import { Either, left, right } from '@/core/either'
-import { EmailAlreadyExists } from './errors/email-already-exists-error'
 import { CompaniesRepository } from '../repositories/companies-repository'
 import { Company } from '../../enterprise/entities/user-company'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { UsersRepository } from '../repositories/users-repository'
 
 interface CreateCompanyUseCaseRequest {
-  name: string
-  email: string
-  password: string
+  userId: string
   cnpj: string
   city?: string
   state?: string
   site_url?: string
 }
 
-type CreateCompanyUseCaseResponse = Either<EmailAlreadyExists, null>
+type CreateCompanyUseCaseResponse = Either<NotAllowedError, null>
 
 export class CreateCompanyUseCase {
-  constructor(private companiesRepository: CompaniesRepository) {}
+  constructor(
+    private companiesRepository: CompaniesRepository,
+    private usersRepository: UsersRepository,
+  ) {}
 
   async execute({
-    name,
-    email,
-    password,
+    userId,
     cnpj,
     city,
     state,
     site_url,
   }: CreateCompanyUseCaseRequest): Promise<CreateCompanyUseCaseResponse> {
     const company = Company.create({
-      name,
-      email,
-      password,
+      userId: new UniqueEntityID(userId),
       cnpj,
       city,
       state,
       site_url,
     })
 
-    const companyAlreadyExists =
-      await this.companiesRepository.findByEmail(email)
+    const doesUserExists = await this.usersRepository.findById(userId)
 
-    if (companyAlreadyExists) {
-      return left(new EmailAlreadyExists(email))
+    if (!doesUserExists) {
+      return left(new NotAllowedError())
     }
 
     await this.companiesRepository.create(company)

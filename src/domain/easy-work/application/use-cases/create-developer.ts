@@ -1,44 +1,42 @@
 import { Either, left, right } from '@/core/either'
-import { EmailAlreadyExists } from './errors/email-already-exists-error'
 import { DevelopersRepository } from '../repositories/developers-repository'
 import { Developer } from '../../enterprise/entities/user-developer'
+import { UsersRepository } from '../repositories/users-repository'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface CreateDeveloperUseCaseRequest {
-  name: string
-  email: string
-  password: string
+  userId: string
   price_per_hour?: number
   occupation_area: string
   available_for_contract?: boolean
 }
 
-type CreateDeveloperUseCaseResponse = Either<EmailAlreadyExists, null>
+type CreateDeveloperUseCaseResponse = Either<NotAllowedError, null>
 
 export class CreateDeveloperUseCase {
-  constructor(private developersRepository: DevelopersRepository) {}
+  constructor(
+    private developersRepository: DevelopersRepository,
+    private usersRepository: UsersRepository,
+  ) {}
 
   async execute({
-    name,
-    email,
-    password,
+    userId,
     price_per_hour,
     occupation_area,
     available_for_contract,
   }: CreateDeveloperUseCaseRequest): Promise<CreateDeveloperUseCaseResponse> {
     const developer = Developer.create({
-      name,
-      email,
-      password,
+      userId: new UniqueEntityID(userId),
       available_for_contract,
       occupation_area,
       price_per_hour,
     })
 
-    const developerAlreadyExists =
-      await this.developersRepository.findByEmail(email)
+    const doesUserExists = await this.usersRepository.findById(userId)
 
-    if (developerAlreadyExists) {
-      return left(new EmailAlreadyExists(email))
+    if (!doesUserExists) {
+      return left(new NotAllowedError())
     }
 
     await this.developersRepository.create(developer)

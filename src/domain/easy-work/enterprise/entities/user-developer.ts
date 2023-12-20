@@ -1,48 +1,24 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
-import { User, UserProps } from './user'
+import { Entity } from '@/core/entities/entity'
 
-export interface DeveloperProps extends UserProps {
-  avatar?: string | null
-  price_per_hour?: number | null
+export interface DeveloperProps {
+  userId: UniqueEntityID
+  price_per_hour: number | null
   occupation_area: string
-  available_for_contract?: boolean
+  available_for_contract: boolean
 }
 
-export class Developer extends User<DeveloperProps> {
-  get name() {
-    return this.props.name
-  }
-
-  set name(name: string) {
-    this.props.name = name
-  }
-
-  get email() {
-    return this.props.email
-  }
-
-  get password() {
-    return this.props.password
-  }
-
-  set password(password: string) {
-    this.props.password = password
-  }
-
-  get avatar() {
-    return this.props.avatar
-  }
-
-  set avatar(avatar: string | null | undefined) {
-    this.props.avatar = avatar
+export class Developer extends Entity<DeveloperProps> {
+  get userId() {
+    return this.props.userId
   }
 
   get price_per_hour() {
     return this.props.price_per_hour
   }
 
-  set price_per_hour(price_per_hour: number | null | undefined) {
+  set price_per_hour(price_per_hour: number | null) {
     this.props.price_per_hour = price_per_hour
   }
 
@@ -58,21 +34,20 @@ export class Developer extends User<DeveloperProps> {
     return this.props.available_for_contract
   }
 
-  set available_for_contract(available_for_contract: boolean | undefined) {
+  set available_for_contract(available_for_contract: boolean) {
     this.props.available_for_contract = available_for_contract
   }
 
   static create(
     props: Optional<
       DeveloperProps,
-      'avatar' | 'price_per_hour' | 'available_for_contract'
+      'price_per_hour' | 'available_for_contract'
     >,
     id?: UniqueEntityID,
   ) {
     const developer = new Developer(
       {
         ...props,
-        avatar: props.avatar ?? null,
         price_per_hour: props.price_per_hour ?? null,
         available_for_contract: props.available_for_contract ?? false,
       },

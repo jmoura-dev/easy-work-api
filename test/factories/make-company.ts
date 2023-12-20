@@ -11,9 +11,7 @@ export function makeCompany(
 ) {
   const company = Company.create(
     {
-      name: faker.lorem.word(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
+      userId: new UniqueEntityID(),
       cnpj: faker.string.numeric(14),
       ...override,
     },

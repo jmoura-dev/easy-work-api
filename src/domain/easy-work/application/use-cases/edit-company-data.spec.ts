@@ -14,36 +14,28 @@ describe('Edit company data Use case', () => {
 
   it('should be able update company data', async () => {
     const company = makeCompany({
-      name: 'Javascript Corporation',
-      email: 'javascript@example.com',
-      password: '123456',
+      cnpj: '12345678900012',
     })
 
     inMemoryCompaniesRepository.items.push(company)
 
     const result = await sut.execute({
-      name: 'Nodejs Corporation',
-      email: 'javascript@example.com',
+      companyId: company.id.toString(),
+      cnpj: '98765432100012',
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryCompaniesRepository.items[0].name).toEqual(
-      'Nodejs Corporation',
-    )
+    expect(inMemoryCompaniesRepository.items[0].cnpj).toEqual('98765432100012')
   })
 
-  it('should not be able to update company data with invalid email', async () => {
-    const company = makeCompany({
-      name: 'Javascript Corporation',
-      email: 'javascript@example.com',
-      password: '123456',
-    })
+  it('should not be able to update company data with invalid id', async () => {
+    const company = makeCompany()
 
     inMemoryCompaniesRepository.items.push(company)
 
     const result = await sut.execute({
-      name: 'Nodejs Corporation',
-      email: 'invalid@email.com',
+      companyId: 'invalid-company-id',
+      site_url: 'new_site.com',
     })
 
     expect(result.isLeft()).toBe(true)

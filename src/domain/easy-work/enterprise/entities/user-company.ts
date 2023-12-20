@@ -1,15 +1,20 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
-import { User, UserProps } from './user'
+import { Entity } from '@/core/entities/entity'
 
-export interface CompanyProps extends UserProps {
+export interface CompanyProps {
+  userId: UniqueEntityID
   cnpj: string
   city: string | null
   state: string | null
   site_url: string | null
 }
 
-export class Company extends User<CompanyProps> {
+export class Company extends Entity<CompanyProps> {
+  get userId() {
+    return this.props.userId
+  }
+
   get cnpj() {
     return this.props.cnpj
   }
