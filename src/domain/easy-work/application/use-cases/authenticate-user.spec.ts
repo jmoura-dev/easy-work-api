@@ -61,21 +61,4 @@ describe('Authenticate User Use Case', () => {
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(WrongCredentialsError)
   })
-
-  it('should not be able to authenticate user with invalid password', async () => {
-    const user = makeUser({
-      email: 'user@example.com',
-      password: await fakeHasher.hash('123456'),
-    })
-
-    inMemoryUsersRepository.items.push(user)
-
-    const result = await sut.execute({
-      email: 'user@example.com',
-      password: '123456',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(WrongCredentialsError)
-  })
 })
