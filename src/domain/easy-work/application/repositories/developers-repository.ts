@@ -1,7 +1,7 @@
 import { Developer } from '../../enterprise/entities/user-developer'
 
-export interface DevelopersRepository {
-  create(developer: Developer): Promise<void>
-  findById(id: string): Promise<Developer | null>
-  save(developer: Developer): Promise<void>
+export abstract class DevelopersRepository {
+  abstract create(developer: Developer): Promise<void>
+  abstract findById(id: string): Promise<Developer | null>
+  abstract save(developer: Developer): Promise<void>
 }

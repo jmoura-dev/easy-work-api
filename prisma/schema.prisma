@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String  @id @default(uuid())
-  name        String
-  email       String  @unique
-  password    String
-  description String?
-  avatar      Avatar?
+  id       String  @id @default(uuid())
+  avatarId String? @unique @map("avatar_id")
+  name     String
+  email    String  @unique
+  password String
+  about    String?
 
   company      Company?
   developer    Developer?
   notification Notification[]
+
+  avatar Avatar? @relation(fields: [avatarId], references: [id])
 
   @@map("users")
 }
@@ -47,12 +49,10 @@ model Company {
 }
 
 model Avatar {
-  id     String  @id @default(uuid())
-  title  String
-  url    String
-  userId String? @unique @map("user_id")
-
-  user User? @relation(fields: [userId], references: [id])
+  id    String @id @default(uuid())
+  title String
+  url   String
+  user  User?
 
   @@map("avatars")
 }

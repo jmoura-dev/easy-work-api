@@ -1,9 +1,13 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Candidature } from '../../enterprise/entities/candidature'
 
-export interface CandidaturesRepository {
-  create(candidature: Candidature): Promise<void>
-  findById(id: string): Promise<Candidature | null>
-  findManyByJobId(param: PaginationParams, id: string): Promise<Candidature[]>
-  save(candidature: Candidature): Promise<void>
+export abstract class CandidaturesRepository {
+  abstract create(candidature: Candidature): Promise<void>
+  abstract findById(id: string): Promise<Candidature | null>
+  abstract findManyByJobId(
+    param: PaginationParams,
+    id: string,
+  ): Promise<Candidature[]>
+
+  abstract save(candidature: Candidature): Promise<void>
 }

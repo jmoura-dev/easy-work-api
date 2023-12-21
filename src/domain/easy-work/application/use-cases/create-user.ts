@@ -4,6 +4,7 @@ import { User } from '../../enterprise/entities/user'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { EmailAlreadyExists } from './errors/email-already-exists-error'
 import { HashGenerator } from '../cryptography/hash-generator'
+import { Injectable } from '@nestjs/common'
 
 interface CreateUserUseCaseRequest {
   name: string
@@ -15,6 +16,7 @@ interface CreateUserUseCaseRequest {
 
 type CreateUserUseCaseResponse = Either<EmailAlreadyExists, null>
 
+@Injectable()
 export class CreateUserUseCase {
   constructor(
     private usersRepository: UsersRepository,
@@ -30,6 +32,10 @@ export class CreateUserUseCase {
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const doesUserAlreadyExists = await this.usersRepository.findByEmail(email)
 
+    if (doesUserAlreadyExists) {
+      return left(new EmailAlreadyExists(email))
+    }
+
     const hashedPassword = await this.hashGenerator.hash(password)
 
     const user = User.create({
@@ -39,10 +45,6 @@ export class CreateUserUseCase {
       avatarId: avatarId ? new UniqueEntityID(avatarId) : null,
       about,
     })
-
-    if (doesUserAlreadyExists) {
-      return left(new EmailAlreadyExists(email))
-    }
 
     await this.usersRepository.create(user)
 
