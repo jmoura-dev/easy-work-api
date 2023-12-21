@@ -10,6 +10,7 @@ import {
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { EmailAlreadyExists } from '@/domain/easy-work/application/use-cases/errors/email-already-exists-error'
+import { Public } from '@/infra/auth/public'
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -29,6 +30,7 @@ export class CreateUserController {
 
   @Post()
   @HttpCode(201)
+  @Public()
   async create(@Body(bodyValidationPipe) body: CreateUserBodySchema) {
     const { name, email, password, avatarId, about } = body
 

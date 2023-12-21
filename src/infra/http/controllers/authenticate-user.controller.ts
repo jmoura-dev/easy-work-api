@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  HttpCode,
   Post,
   UnauthorizedException,
 } from '@nestjs/common'
@@ -9,6 +10,7 @@ import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AuthenticateUserUseCase } from '@/domain/easy-work/application/use-cases/authenticate-user'
 import { WrongCredentialsError } from '@/domain/easy-work/application/use-cases/errors/wrong-credentials-error'
+import { Public } from '@/infra/auth/public'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -24,6 +26,8 @@ export class AuthenticateUserController {
   constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
 
   @Post()
+  @HttpCode(201)
+  @Public()
   async handle(@Body(bodyValidationPipe) body: AuthenticateBodySchema) {
     const { email, password } = body
 
