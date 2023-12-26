@@ -25,14 +25,14 @@ model User {
 }
 
 model Developer {
-  id                    String                @id @default(uuid())
-  userId                String                @unique @map("user_id")
-  occupation_area       String
+  id                     String                @id @default(uuid())
+  userId                 String                @unique @map("user_id")
+  occupation_area        String
   available_for_contract Boolean?              @default(false)
-  price_per_hour        Decimal?              @db.Decimal(6, 2)
-  user                  User                  @relation(fields: [userId], references: [id])
-  candidature           Candidature[]
-  developerTechnology   DeveloperTechnology[]
+  price_per_hour         Decimal?              @db.Decimal(6, 2)
+  user                   User                  @relation(fields: [userId], references: [id])
+  candidature            Candidature[]
+  developerTechnology    DeveloperTechnology[]
 }
 
 model Company {
@@ -40,6 +40,7 @@ model Company {
   userId   String  @unique @map("user_id")
   cnpj     String
   city     String?
+  state    String?
   site_url String?
 
   user User  @relation(fields: [userId], references: [id])

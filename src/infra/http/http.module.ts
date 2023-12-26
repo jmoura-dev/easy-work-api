@@ -7,6 +7,8 @@ import { AuthenticateUserController } from './controllers/authenticate-user.cont
 import { AuthenticateUserUseCase } from '@/domain/easy-work/application/use-cases/authenticate-user'
 import { CreateDeveloperController } from './controllers/create-developer.controller'
 import { CreateDeveloperUseCase } from '@/domain/easy-work/application/use-cases/create-developer'
+import { CreateCompanyController } from './controllers/create-company.controller'
+import { CreateCompanyUseCase } from '@/domain/easy-work/application/use-cases/create-company'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -14,11 +16,13 @@ import { CreateDeveloperUseCase } from '@/domain/easy-work/application/use-cases
     CreateUserController,
     AuthenticateUserController,
     CreateDeveloperController,
+    CreateCompanyController,
   ],
   providers: [
     CreateUserUseCase,
     AuthenticateUserUseCase,
     CreateDeveloperUseCase,
+    CreateCompanyUseCase,
   ],
 })
 export class HttpModule {}
