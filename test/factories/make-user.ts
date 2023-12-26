@@ -26,7 +26,7 @@ export function makeUser(
 export class UserFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaUser(data: Partial<UserProps> = {}) {
+  async makePrismaUser(data: Partial<UserProps> = {}): Promise<User> {
     const user = makeUser(data)
 
     await this.prisma.user.create({

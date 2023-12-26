@@ -4,6 +4,7 @@ import { Developer } from '../../enterprise/entities/user-developer'
 import { UsersRepository } from '../repositories/users-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface CreateDeveloperUseCaseRequest {
   userId: string
@@ -14,6 +15,7 @@ interface CreateDeveloperUseCaseRequest {
 
 type CreateDeveloperUseCaseResponse = Either<NotAllowedError, null>
 
+@Injectable()
 export class CreateDeveloperUseCase {
   constructor(
     private developersRepository: DevelopersRepository,
