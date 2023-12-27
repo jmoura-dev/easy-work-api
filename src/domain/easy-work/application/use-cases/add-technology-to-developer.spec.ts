@@ -7,6 +7,7 @@ import { makeTechnology } from 'test/factories/make-technology'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeDeveloperTechnology } from 'test/factories/make-developer-technology'
 import { TechnologyAlreadyAddedInTheDeveloper } from './errors/technology-already-added-in-the-developer.erro'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
@@ -25,18 +26,25 @@ describe('Add technology to developer Use Case', () => {
       )
     sut = new AddTechnologyToDeveloperUseCase(
       inMemoryDeveloperTechnologiesRepository,
+      inMemoryDevelopersRepository,
     )
   })
 
   it('should be able to add new technology to developer', async () => {
-    const developer = makeDeveloper({}, new UniqueEntityID('developer-01'))
+    const user = makeUser()
+    const developer = makeDeveloper(
+      {
+        userId: user.id,
+      },
+      new UniqueEntityID('developer-01'),
+    )
     const technology = makeTechnology()
 
     inMemoryDevelopersRepository.items.push(developer)
     inMemoryTechnologiesRepository.items.push(technology)
 
     const result = await sut.execute({
-      developerId: developer.id.toString(),
+      userId: user.id.toString(),
       technologyId: technology.id.toString(),
     })
 
@@ -47,17 +55,25 @@ describe('Add technology to developer Use Case', () => {
   })
 
   it('should not be able to add repeated technology to the same developer ', async () => {
-    const developer = makeDeveloper({}, new UniqueEntityID('developer-01'))
+    const user = makeUser()
+
+    const developer = makeDeveloper(
+      {
+        userId: user.id,
+      },
+      new UniqueEntityID('developer-01'),
+    )
     const technology = makeTechnology()
     const developerTechnology = makeDeveloperTechnology({
       developerId: developer.id,
       technologyId: technology.id,
     })
 
+    inMemoryDevelopersRepository.items.push(developer)
     inMemoryDeveloperTechnologiesRepository.items.push(developerTechnology)
 
     const result = await sut.execute({
-      developerId: developer.id.toString(),
+      userId: user.id.toString(),
       technologyId: technology.id.toString(),
     })
 

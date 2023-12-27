@@ -18,6 +18,18 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
     return developer
   }
 
+  async findByUserId(userId: string): Promise<Developer | null> {
+    const developer = this.items.find(
+      (item) => item.userId.toString() === userId,
+    )
+
+    if (!developer) {
+      return null
+    }
+
+    return developer
+  }
+
   async save(developer: Developer): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === developer.id)
 

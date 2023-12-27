@@ -6,6 +6,10 @@ import { DevelopersRepository } from '@/domain/easy-work/application/repositorie
 import { PrismaDevelopersRepository } from './prisma/repositories/prisma-developers-repository'
 import { CompaniesRepository } from '@/domain/easy-work/application/repositories/companies-repository'
 import { PrismaCompaniesRepository } from './prisma/repositories/prisma-companies-repository'
+import { DeveloperTechnologiesRepository } from '@/domain/easy-work/application/repositories/developer-technologies-repository'
+import { PrismaDeveloperTechnologiesRepository } from './prisma/repositories/prisma-developer-technologies-repository'
+import { TechnologiesRepository } from '@/domain/easy-work/application/repositories/technologies-repository'
+import { PrismaTechnologiesRepository } from './prisma/repositories/prisma-technologies-repository'
 
 @Module({
   providers: [
@@ -22,12 +26,22 @@ import { PrismaCompaniesRepository } from './prisma/repositories/prisma-companie
       provide: CompaniesRepository,
       useClass: PrismaCompaniesRepository,
     },
+    {
+      provide: TechnologiesRepository,
+      useClass: PrismaTechnologiesRepository,
+    },
+    {
+      provide: DeveloperTechnologiesRepository,
+      useClass: PrismaDeveloperTechnologiesRepository,
+    },
   ],
   exports: [
     PrismaService,
     UsersRepository,
     DevelopersRepository,
     CompaniesRepository,
+    TechnologiesRepository,
+    DeveloperTechnologiesRepository,
   ],
 })
 export class DatabaseModule {}

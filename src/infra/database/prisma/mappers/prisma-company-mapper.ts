@@ -4,13 +4,16 @@ import { Prisma, Company as PrismaCompany } from '@prisma/client'
 
 export class PrismaCompanyMapper {
   static toDomain(raw: PrismaCompany): Company {
-    return Company.create({
-      userId: new UniqueEntityID(raw.userId),
-      cnpj: raw.cnpj,
-      city: raw.city,
-      state: raw.state,
-      site_url: raw.site_url,
-    })
+    return Company.create(
+      {
+        userId: new UniqueEntityID(raw.userId),
+        cnpj: raw.cnpj,
+        city: raw.city,
+        state: raw.state,
+        site_url: raw.site_url,
+      },
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(company: Company): Prisma.CompanyUncheckedCreateInput {

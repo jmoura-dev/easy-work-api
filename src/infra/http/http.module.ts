@@ -9,6 +9,8 @@ import { CreateDeveloperController } from './controllers/create-developer.contro
 import { CreateDeveloperUseCase } from '@/domain/easy-work/application/use-cases/create-developer'
 import { CreateCompanyController } from './controllers/create-company.controller'
 import { CreateCompanyUseCase } from '@/domain/easy-work/application/use-cases/create-company'
+import { AddTechnologyToDeveloperController } from './controllers/add-technology-to-developer.controller'
+import { AddTechnologyToDeveloperUseCase } from '@/domain/easy-work/application/use-cases/add-technology-to-developer'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { CreateCompanyUseCase } from '@/domain/easy-work/application/use-cases/c
     AuthenticateUserController,
     CreateDeveloperController,
     CreateCompanyController,
+    AddTechnologyToDeveloperController,
   ],
   providers: [
     CreateUserUseCase,
     AuthenticateUserUseCase,
     CreateDeveloperUseCase,
     CreateCompanyUseCase,
+    AddTechnologyToDeveloperUseCase,
   ],
 })
 export class HttpModule {}

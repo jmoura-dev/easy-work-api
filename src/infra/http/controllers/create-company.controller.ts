@@ -43,13 +43,12 @@ export class CreateCompanyController {
     if (result.isLeft()) {
       const error = result.value
 
-      if (error instanceof NotAllowedError)
-        switch (error.constructor) {
-          case NotAllowedError:
-            throw new NotAcceptableException()
-          default:
-            throw new BadRequestException(error.message)
-        }
+      switch (error.constructor) {
+        case NotAllowedError:
+          throw new NotAcceptableException()
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
   }
 }
