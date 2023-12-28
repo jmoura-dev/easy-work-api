@@ -1,5 +1,5 @@
-- [ ] It must be possible to register as a developer or company;
-- [ ] It must be possible to authenticate to access some functions;
+- [x] It must be possible to register as a developer or company;
+- [x] It must be possible to authenticate to access some functions;
 - [ ] It must be possible to change developer or company data;
 - [ ] A company can register a new vacancy;
 - [ ] A developer can register for a new vacancy;
