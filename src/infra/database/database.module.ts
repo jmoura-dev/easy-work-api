@@ -10,6 +10,9 @@ import { DeveloperTechnologiesRepository } from '@/domain/easy-work/application/
 import { PrismaDeveloperTechnologiesRepository } from './prisma/repositories/prisma-developer-technologies-repository'
 import { TechnologiesRepository } from '@/domain/easy-work/application/repositories/technologies-repository'
 import { PrismaTechnologiesRepository } from './prisma/repositories/prisma-technologies-repository'
+import { CandidaturesRepository } from '@/domain/easy-work/application/repositories/candidatures-repository'
+import { PrismaCandidaturesRepository } from './prisma/repositories/prisma-candidatures-repository'
+import { JobsRepository } from '@/domain/easy-work/application/repositories/jobs-repository'
 
 @Module({
   providers: [
@@ -33,6 +36,14 @@ import { PrismaTechnologiesRepository } from './prisma/repositories/prisma-techn
     {
       provide: DeveloperTechnologiesRepository,
       useClass: PrismaDeveloperTechnologiesRepository,
+    },
+    {
+      provide: CandidaturesRepository,
+      useClass: PrismaCandidaturesRepository,
+    },
+    {
+      provide: JobsRepository,
+      useClass: PrismaJobsRepository,
     },
   ],
   exports: [

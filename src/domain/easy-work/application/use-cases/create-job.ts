@@ -32,7 +32,7 @@ export class CreateJobUseCase {
     }
 
     const job = Job.create({
-      company_id: new UniqueEntityID(companyId),
+      companyId: new UniqueEntityID(companyId),
       title,
       description,
     })

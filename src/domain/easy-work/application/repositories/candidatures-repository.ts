@@ -6,7 +6,7 @@ export abstract class CandidaturesRepository {
   abstract findById(id: string): Promise<Candidature | null>
   abstract findManyByJobId(
     param: PaginationParams,
-    id: string,
+    jobId: string,
   ): Promise<Candidature[]>
 
   abstract save(candidature: Candidature): Promise<void>

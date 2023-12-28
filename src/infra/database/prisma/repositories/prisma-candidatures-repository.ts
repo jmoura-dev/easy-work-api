@@ -3,7 +3,9 @@ import { CandidaturesRepository } from '@/domain/easy-work/application/repositor
 import { Candidature } from '@/domain/easy-work/enterprise/entities/candidature'
 import { PrismaCandidatureMapper } from '../mappers/prisma-candidature-mapper'
 import { PrismaService } from '../prisma.service'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class PrismaCandidaturesRepository implements CandidaturesRepository {
   constructor(private prisma: PrismaService) {}
 

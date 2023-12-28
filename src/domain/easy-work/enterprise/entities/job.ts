@@ -4,7 +4,7 @@ import { Optional } from '@/core/types/optional'
 import { Slug } from './value-objects/slug'
 
 export interface JobProps {
-  company_id: UniqueEntityID
+  companyId: UniqueEntityID
   title: string
   description: string
   slug: Slug
@@ -12,8 +12,8 @@ export interface JobProps {
 }
 
 export class Job extends Entity<JobProps> {
-  get company_id() {
-    return this.props.company_id
+  get companyId() {
+    return this.props.companyId
   }
 
   get title() {

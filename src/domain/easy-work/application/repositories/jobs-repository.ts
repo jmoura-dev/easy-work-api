@@ -6,6 +6,6 @@ export abstract class JobsRepository {
   abstract findById(id: string): Promise<Job | null>
   abstract findManyByCompanyId(
     param: PaginationParams,
-    id: string,
+    companyId: string,
   ): Promise<Job[]>
 }

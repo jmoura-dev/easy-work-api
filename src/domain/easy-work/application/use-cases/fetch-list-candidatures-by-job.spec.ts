@@ -30,7 +30,7 @@ describe('Fetch list candidatures by job Use case', () => {
     inMemoryCompaniesRepository.create(company)
 
     const job = makeJob({
-      company_id: company.id,
+      companyId: company.id,
     })
 
     inMemoryJobsRepository.items.push(job)
@@ -69,7 +69,7 @@ describe('Fetch list candidatures by job Use case', () => {
     inMemoryCompaniesRepository.create(company)
 
     const job = makeJob({
-      company_id: company.id,
+      companyId: company.id,
     })
 
     inMemoryJobsRepository.items.push(job)
@@ -97,7 +97,7 @@ describe('Fetch list candidatures by job Use case', () => {
     inMemoryCompaniesRepository.create(company)
 
     const job = makeJob({
-      company_id: company.id,
+      companyId: company.id,
     })
 
     inMemoryJobsRepository.items.push(job)

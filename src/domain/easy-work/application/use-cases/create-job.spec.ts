@@ -27,7 +27,7 @@ describe('Create job Use case', () => {
     const companyId = company.id.toString()
 
     const job = makeJob({
-      company_id: company.id,
+      companyId: company.id,
       title: 'new job',
     })
 

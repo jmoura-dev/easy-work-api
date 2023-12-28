@@ -22,10 +22,10 @@ export class InMemoryCandidaturesRepository implements CandidaturesRepository {
 
   async findManyByJobId(
     { page }: PaginationParams,
-    id: string,
+    jobId: string,
   ): Promise<Candidature[]> {
     const candidatures = this.items
-      .filter((item) => item.jobId.toString() === id)
+      .filter((item) => item.jobId.toString() === jobId)
       .slice((page - 1) * 20, page * 20)
 
     return candidatures

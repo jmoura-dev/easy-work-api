@@ -34,7 +34,7 @@ export class FetchListCandidaturesByJobUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (job.company_id.toString() !== companyId) {
+    if (job.companyId.toString() !== companyId) {
       return left(new ResourceNotFoundError())
     }
 
