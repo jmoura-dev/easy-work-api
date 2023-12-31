@@ -6,6 +6,7 @@ import { makeDeveloper } from 'test/factories/make-developer'
 import { makeJob } from 'test/factories/make-job'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
@@ -26,17 +27,19 @@ describe('Create candidature Use case', () => {
   })
 
   it('should be able to create a new candidature', async () => {
-    const developer = makeDeveloper()
+    const user = makeUser()
+    const developer = makeDeveloper({
+      userId: user.id,
+    })
     const job = makeJob()
 
-    const developerId = developer.id.toString()
     const jobId = job.id.toString()
 
     inMemoryDevelopersRepository.create(developer)
     inMemoryJobsRepository.create(job)
 
     const result = await sut.execute({
-      developerId,
+      userId: user.id.toString(),
       jobId,
       status: 'Candidature completed successfully',
     })
@@ -48,7 +51,13 @@ describe('Create candidature Use case', () => {
   })
 
   it('should not be able to create a new candidature with invalid developerId', async () => {
-    const developer = makeDeveloper({}, new UniqueEntityID('developer-01'))
+    const user = makeUser()
+    const developer = makeDeveloper(
+      {
+        userId: user.id,
+      },
+      new UniqueEntityID('developer-01'),
+    )
     const job = makeJob()
 
     const jobId = job.id.toString()
@@ -57,7 +66,7 @@ describe('Create candidature Use case', () => {
     inMemoryJobsRepository.create(job)
 
     const result = await sut.execute({
-      developerId: 'Invalid-developer-id',
+      userId: 'Invalid-developer-id',
       jobId,
       status: 'Candidature completed successfully',
     })
@@ -67,16 +76,17 @@ describe('Create candidature Use case', () => {
   })
 
   it('should not be able to create a new candidature with invalid jobId', async () => {
-    const developer = makeDeveloper()
+    const user = makeUser()
+    const developer = makeDeveloper({
+      userId: user.id,
+    })
     const job = makeJob({}, new UniqueEntityID('job-01'))
-
-    const developerId = developer.id.toString()
 
     inMemoryDevelopersRepository.create(developer)
     inMemoryJobsRepository.create(job)
 
     const result = await sut.execute({
-      developerId,
+      userId: user.id.toString(),
       jobId: 'Invalid-developer-id',
       status: 'Candidature completed successfully',
     })

@@ -5,15 +5,17 @@ import { JobsRepository } from '../repositories/jobs-repository'
 import { DevelopersRepository } from '../repositories/developers-repository'
 import { Candidature } from '../../enterprise/entities/candidature'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface CreateCandidatureUseCaseRequest {
-  developerId: string
+  userId: string
   jobId: string
-  status: string
+  status?: string
 }
 
 type CreateCandidatureUseCaseResponse = Either<ResourceNotFoundError, null>
 
+@Injectable()
 export class CreateCandidatureUseCase {
   constructor(
     private candidaturesRepository: CandidaturesRepository,
@@ -22,11 +24,11 @@ export class CreateCandidatureUseCase {
   ) {}
 
   async execute({
-    developerId,
+    userId,
     jobId,
     status,
   }: CreateCandidatureUseCaseRequest): Promise<CreateCandidatureUseCaseResponse> {
-    const developer = await this.developersRepository.findById(developerId)
+    const developer = await this.developersRepository.findByUserId(userId)
 
     if (!developer) {
       return left(new ResourceNotFoundError())
@@ -39,9 +41,9 @@ export class CreateCandidatureUseCase {
     }
 
     const candidature = Candidature.create({
-      developerId: new UniqueEntityID(developerId),
+      developerId: developer.id,
       jobId: new UniqueEntityID(jobId),
-      status,
+      status: status ?? 'Aguardando atualizações.',
     })
 
     await this.candidaturesRepository.create(candidature)
