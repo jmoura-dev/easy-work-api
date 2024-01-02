@@ -2,6 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { TechnologiesRepository } from '../repositories/technologies-repository'
 import { TechnologyNameAlreadyExists } from './errors/technology-name-already-exists-error'
 import { Technology } from '../../enterprise/entities/technology'
+import { Injectable } from '@nestjs/common'
 
 interface CreateTechnologyUseCaseRequest {
   name: string
@@ -9,6 +10,7 @@ interface CreateTechnologyUseCaseRequest {
 
 type CreateTechnologyUseCaseResponse = Either<TechnologyNameAlreadyExists, null>
 
+@Injectable()
 export class CreateTechnologyUseCase {
   constructor(private technologiesRepository: TechnologiesRepository) {}
 

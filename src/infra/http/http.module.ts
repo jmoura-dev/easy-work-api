@@ -15,6 +15,8 @@ import { CreateCandidatureController } from './controllers/create-candidature.co
 import { CreateCandidatureUseCase } from '@/domain/easy-work/application/use-cases/create-candidature'
 import { CreateJobController } from './controllers/create-job.controller'
 import { CreateJobUseCase } from '@/domain/easy-work/application/use-cases/create-job'
+import { CreateTechnologyController } from './controllers/create-technology.controller'
+import { CreateTechnologyUseCase } from '@/domain/easy-work/application/use-cases/create-technology'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +28,7 @@ import { CreateJobUseCase } from '@/domain/easy-work/application/use-cases/creat
     AddTechnologyToDeveloperController,
     CreateCandidatureController,
     CreateJobController,
+    CreateTechnologyController,
   ],
   providers: [
     CreateUserUseCase,
@@ -35,6 +38,7 @@ import { CreateJobUseCase } from '@/domain/easy-work/application/use-cases/creat
     AddTechnologyToDeveloperUseCase,
     CreateCandidatureUseCase,
     CreateJobUseCase,
+    CreateTechnologyUseCase,
   ],
 })
 export class HttpModule {}
