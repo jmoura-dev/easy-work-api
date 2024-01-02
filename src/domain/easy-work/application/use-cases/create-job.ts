@@ -3,16 +3,17 @@ import { JobsRepository } from '../repositories/jobs-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { CompaniesRepository } from '../repositories/companies-repository'
 import { Job } from '../../enterprise/entities/job'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface CreateJobUseCaseRequest {
-  companyId: string
+  userId: string
   title: string
   description: string
 }
 
 type CreateJobUseCaseResponse = Either<NotAllowedError, null>
 
+@Injectable()
 export class CreateJobUseCase {
   constructor(
     private jobsRepository: JobsRepository,
@@ -20,19 +21,18 @@ export class CreateJobUseCase {
   ) {}
 
   async execute({
-    companyId,
+    userId,
     title,
     description,
   }: CreateJobUseCaseRequest): Promise<CreateJobUseCaseResponse> {
-    const checkCompanyExists =
-      await this.companiesRepository.findById(companyId)
+    const company = await this.companiesRepository.findByUserId(userId)
 
-    if (!checkCompanyExists) {
+    if (!company) {
       return left(new NotAllowedError())
     }
 
     const job = Job.create({
-      companyId: new UniqueEntityID(companyId),
+      companyId: company.id,
       title,
       description,
     })

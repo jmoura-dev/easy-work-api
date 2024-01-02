@@ -1,10 +1,9 @@
 import { InMemoryJobsRepository } from 'test/repositories/in-memory-jobs-repository'
 import { CreateJobUseCase } from './create-job'
-import { makeJob } from 'test/factories/make-job'
 import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 import { makeCompany } from 'test/factories/make-company'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryJobsRepository: InMemoryJobsRepository
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
@@ -21,33 +20,33 @@ describe('Create job Use case', () => {
   })
 
   it('should be able to create a new job', async () => {
-    const company = makeCompany()
-
-    inMemoryCompaniesRepository.items.push(company)
-    const companyId = company.id.toString()
-
-    const job = makeJob({
-      companyId: company.id,
-      title: 'new job',
+    const user = makeUser()
+    const company = makeCompany({
+      userId: user.id,
     })
 
+    inMemoryCompaniesRepository.items.push(company)
+
     const result = await sut.execute({
-      companyId,
-      title: job.title,
-      description: job.description,
+      userId: user.id.toString(),
+      title: 'new job title',
+      description: 'new job description',
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryJobsRepository.items[0].title).toEqual('new job')
+    expect(inMemoryJobsRepository.items[0].title).toEqual('new job title')
   })
 
-  it('should not be able to create a new job with invalid company id', async () => {
-    const company = makeCompany({}, new UniqueEntityID('company-id'))
+  it('should not be able to create a new job with invalid company', async () => {
+    const user = makeUser()
+    const company = makeCompany({
+      userId: user.id,
+    })
 
     inMemoryCompaniesRepository.items.push(company)
 
     const result = await sut.execute({
-      companyId: 'Invalid-company-id',
+      userId: 'Invalid-company-id',
       title: 'new job',
       description: 'new job description',
     })

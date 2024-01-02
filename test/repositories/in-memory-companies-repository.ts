@@ -18,6 +18,16 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
     return company
   }
 
+  async findByUserId(userId: string): Promise<Company | null> {
+    const company = this.items.find((item) => item.userId.toString() === userId)
+
+    if (!company) {
+      return null
+    }
+
+    return company
+  }
+
   async save(company: Company): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === company.id)
 
