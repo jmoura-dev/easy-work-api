@@ -17,6 +17,10 @@ import { CreateJobController } from './controllers/create-job.controller'
 import { CreateJobUseCase } from '@/domain/easy-work/application/use-cases/create-job'
 import { CreateTechnologyController } from './controllers/create-technology.controller'
 import { CreateTechnologyUseCase } from '@/domain/easy-work/application/use-cases/create-technology'
+import { EditCompanyController } from './controllers/edit-company.controller'
+import { EditCompanyDataUseCase } from '@/domain/easy-work/application/use-cases/edit-company-data'
+import { EditDeveloperController } from './controllers/edit-developer.controller'
+import { EditDeveloperDataUseCase } from '@/domain/easy-work/application/use-cases/edit-developer-data'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -29,6 +33,8 @@ import { CreateTechnologyUseCase } from '@/domain/easy-work/application/use-case
     CreateCandidatureController,
     CreateJobController,
     CreateTechnologyController,
+    EditCompanyController,
+    EditDeveloperController,
   ],
   providers: [
     CreateUserUseCase,
@@ -39,6 +45,8 @@ import { CreateTechnologyUseCase } from '@/domain/easy-work/application/use-case
     CreateCandidatureUseCase,
     CreateJobUseCase,
     CreateTechnologyUseCase,
+    EditCompanyDataUseCase,
+    EditDeveloperDataUseCase,
   ],
 })
 export class HttpModule {}

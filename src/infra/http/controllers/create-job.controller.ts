@@ -35,7 +35,7 @@ export class CreateJobController {
 
     if (result.isLeft()) {
       if (result.value instanceof NotAllowedError) {
-        throw new ForbiddenException()
+        throw new ForbiddenException(result.value.message)
       }
     }
   }

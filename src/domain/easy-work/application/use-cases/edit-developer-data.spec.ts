@@ -2,7 +2,7 @@ import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-develo
 import { makeDeveloper } from 'test/factories/make-developer'
 import { EditDeveloperDataUseCase } from './edit-developer-data'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: EditDeveloperDataUseCase
@@ -14,14 +14,16 @@ describe('Edit developer data Use case', () => {
   })
 
   it('should be able update developer data', async () => {
+    const user = makeUser()
     const developer = makeDeveloper({
+      userId: user.id,
       occupation_area: 'Backend',
     })
 
     inMemoryDevelopersRepository.items.push(developer)
 
     const result = await sut.execute({
-      developerId: developer.id.toString(),
+      userId: user.id.toString(),
       occupation_area: 'Frontend',
     })
 
@@ -32,17 +34,16 @@ describe('Edit developer data Use case', () => {
   })
 
   it('should not be able to update developer data with invalid id', async () => {
-    const developer = makeDeveloper(
-      {
-        occupation_area: 'Backend',
-      },
-      new UniqueEntityID('developer-01'),
-    )
+    const user = makeUser()
+    const developer = makeDeveloper({
+      userId: user.id,
+      occupation_area: 'Backend',
+    })
 
     inMemoryDevelopersRepository.items.push(developer)
 
     const result = await sut.execute({
-      developerId: 'invalid-developer-id',
+      userId: 'invalid-user-id',
       occupation_area: 'FullStack',
     })
 

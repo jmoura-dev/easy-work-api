@@ -26,7 +26,7 @@ export class CreateTechnologyController {
 
     if (result.isLeft()) {
       if (result.value instanceof TechnologyNameAlreadyExists) {
-        throw new ForbiddenException()
+        throw new ForbiddenException(result.value.message)
       }
     }
   }
