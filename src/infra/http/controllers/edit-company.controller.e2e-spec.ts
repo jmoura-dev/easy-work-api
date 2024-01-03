@@ -56,8 +56,6 @@ describe('Edit Company Controller(E2E)', () => {
       },
     })
 
-    console.log(companyOnDatabase)
-
     expect(companyOnDatabase).toBeTruthy()
     expect(companyOnDatabase).toMatchObject({
       cnpj: '12345678900012',

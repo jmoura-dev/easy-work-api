@@ -60,8 +60,6 @@ describe('Edit Developer Controller(E2E)', () => {
       },
     })
 
-    console.log(developerOnDatabase)
-
     expect(developerOnDatabase).toBeTruthy()
     expect(developerOnDatabase).toMatchObject({
       price_per_hour: new Decimal(15),

@@ -47,7 +47,7 @@ describe('Create Job Controller(E2E)', () => {
 
     expect(response.statusCode).toEqual(201)
 
-    const jobOnDatabase = await prisma.job.findUnique({
+    const jobOnDatabase = await prisma.job.findFirst({
       where: {
         companyId: company.id.toString(),
       },

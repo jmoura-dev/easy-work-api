@@ -3,30 +3,32 @@ import { CompaniesRepository } from '../repositories/companies-repository'
 import { JobsRepository } from '../repositories/jobs-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Job } from '../../enterprise/entities/job'
+import { Injectable } from '@nestjs/common'
 
-interface FetchListJobsByCompanyRequest {
-  companyId: string
+interface FetchListJobsByCompanyUseCaseRequest {
+  userId: string
   page: number
 }
 
-type FetchListJobsByCompanyResponse = Either<
+type FetchListJobsByCompanyUseCaseResponse = Either<
   ResourceNotFoundError,
   {
     jobs: Job[]
   }
 >
 
-export class FetchListJobsByCompany {
+@Injectable()
+export class FetchListJobsByCompanyUseCase {
   constructor(
     private jobsRepository: JobsRepository,
     private companiesRepository: CompaniesRepository,
   ) {}
 
   async execute({
-    companyId,
+    userId,
     page,
-  }: FetchListJobsByCompanyRequest): Promise<FetchListJobsByCompanyResponse> {
-    const company = await this.companiesRepository.findById(companyId)
+  }: FetchListJobsByCompanyUseCaseRequest): Promise<FetchListJobsByCompanyUseCaseResponse> {
+    const company = await this.companiesRepository.findByUserId(userId)
 
     if (!company) {
       return left(new ResourceNotFoundError())
@@ -34,7 +36,7 @@ export class FetchListJobsByCompany {
 
     const jobs = await this.jobsRepository.findManyByCompanyId(
       { page },
-      companyId,
+      company.id.toString(),
     )
 
     return right({

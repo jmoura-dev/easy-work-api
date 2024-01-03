@@ -60,7 +60,7 @@ model Avatar {
 
 model Job {
   id          String   @id @default(uuid())
-  companyId   String   @unique @map("company_id")
+  companyId   String   @map("company_id")
   title       String
   description String
   slug        String
