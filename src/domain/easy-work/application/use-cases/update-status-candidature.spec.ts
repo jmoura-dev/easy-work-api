@@ -3,6 +3,7 @@ import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-compani
 import { UpdateStatusCandidatureUseCase } from './update-status-candidature'
 import { makeCompany } from 'test/factories/make-company'
 import { makeCandidature } from 'test/factories/make-candidature'
+import { makeUser } from 'test/factories/make-user'
 
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
@@ -20,19 +21,22 @@ describe('Update status candidature Use case', () => {
   })
 
   it('should be able to update status', async () => {
-    const company = makeCompany()
+    const user = makeUser()
+
+    const company = makeCompany({
+      userId: user.id,
+    })
     const candidature = makeCandidature({
       status: 'New candidature status',
     })
 
-    const companyId = company.id.toString()
     const candidatureId = candidature.id.toString()
 
     inMemoryCompaniesRepository.create(company)
     inMemoryCandidaturesRepository.create(candidature)
 
     const result = await sut.execute({
-      companyId,
+      userId: user.id.toString(),
       candidatureId,
       status: 'Analisando perfil',
     })

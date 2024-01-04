@@ -5,6 +5,10 @@ export const envSchema = z.object({
   JWT_SECRET_KEY: z.string(),
   JWT_PUBLIC_KEY: z.string(),
   PORT: z.coerce.number().optional().default(3333),
+  PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: z.coerce
+    .boolean()
+    .optional()
+    .default(true),
 })
 
 export type Env = z.infer<typeof envSchema>

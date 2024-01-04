@@ -10,6 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: easy-work
+      PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: true
       PGDATA: /data/postgres
     volumes:
       - ./data/pg:/data/postgres

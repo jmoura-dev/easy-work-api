@@ -25,6 +25,8 @@ import { FetchListJobsByCompanyController } from './controllers/fetch-list-jobs-
 import { FetchListJobsByCompanyUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-jobs-by-company'
 import { FetchListTechnologiesByDeveloperController } from './controllers/fetch-list-technologies-by-developer.controller'
 import { FetchListTechnologiesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-technologies-by-developer'
+import { UpdateStatusCandidatureUseCase } from '@/domain/easy-work/application/use-cases/update-status-candidature'
+import { UpdateStatusCandidatureController } from './controllers/update-status-candidature.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -41,6 +43,7 @@ import { FetchListTechnologiesByDeveloperUseCase } from '@/domain/easy-work/appl
     EditDeveloperController,
     FetchListJobsByCompanyController,
     FetchListTechnologiesByDeveloperController,
+    UpdateStatusCandidatureController,
   ],
   providers: [
     CreateUserUseCase,
@@ -55,6 +58,7 @@ import { FetchListTechnologiesByDeveloperUseCase } from '@/domain/easy-work/appl
     EditDeveloperDataUseCase,
     FetchListJobsByCompanyUseCase,
     FetchListTechnologiesByDeveloperUseCase,
+    UpdateStatusCandidatureUseCase,
   ],
 })
 export class HttpModule {}
