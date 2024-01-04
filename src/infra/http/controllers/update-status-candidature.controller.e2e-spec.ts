@@ -46,7 +46,7 @@ describe('Update Status Candidature Controller(E2E)', () => {
     await app.init()
   })
 
-  test('[PUT] /candidatures/:candidature_id', async () => {
+  test('[PATCH] /candidatures/:candidature_id', async () => {
     const user = await userFactory.makePrismaUser()
     const userId = user.id.toString()
     const accessToken = jwt.sign({ sub: userId })
@@ -68,15 +68,14 @@ describe('Update Status Candidature Controller(E2E)', () => {
       jobId: job.id,
       status: 'Candidatura feita com sucesso!',
     })
+
     const candidatureId = candidature.id.toString()
 
     const response = await request(app.getHttpServer())
-      .put(`/candidatures/${candidatureId}`)
+      .patch(`/candidatures/${candidatureId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        userId,
-        candidatureId,
-        status: 'Avaliando teste técnico',
+        status: '[Stage 3] - Avaliando teste técnico.',
       })
 
     expect(response.statusCode).toEqual(200)
@@ -90,6 +89,8 @@ describe('Update Status Candidature Controller(E2E)', () => {
     console.log(candidatureOnDatabase)
 
     expect(candidatureOnDatabase).toBeTruthy()
-    expect(candidatureOnDatabase?.status).toEqual('Avaliando teste técnico')
+    expect(candidatureOnDatabase?.status).toEqual(
+      '[Stage 3] - Avaliando teste técnico.',
+    )
   })
 })

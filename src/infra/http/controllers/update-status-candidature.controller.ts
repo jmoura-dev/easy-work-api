@@ -5,7 +5,8 @@ import {
   Controller,
   HttpCode,
   NotAcceptableException,
-  Put,
+  Param,
+  Patch,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
@@ -13,14 +14,11 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
-const updateBodySchema = z.object({
-  candidatureId: z.string().uuid(),
-  status: z.string(),
-})
+const status = z.string()
 
-const zodValidationPipe = new ZodValidationPipe(updateBodySchema)
+const zodValidationPipe = new ZodValidationPipe(status)
 
-type UpdateBodySchema = z.infer<typeof updateBodySchema>
+type Status = z.infer<typeof status>
 
 @Controller('/candidatures/:candidature_id')
 export class UpdateStatusCandidatureController {
@@ -28,14 +26,14 @@ export class UpdateStatusCandidatureController {
     private updateStatusCandidature: UpdateStatusCandidatureUseCase,
   ) {}
 
-  @Put()
+  @Patch()
   @HttpCode(200)
   async handle(
     @CurrentUser() user: UserPayload,
-    @Body(zodValidationPipe) body: UpdateBodySchema,
+    @Param('candidature_id') candidatureId: string,
+    @Body('status', zodValidationPipe) status: Status,
   ) {
     const { sub: userId } = user
-    const { candidatureId, status } = body
 
     const result = await this.updateStatusCandidature.execute({
       userId,
