@@ -3,9 +3,10 @@ import { DevelopersRepository } from '../repositories/developers-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { DeveloperTechnologiesRepository } from '../repositories/developer-technologies-repository'
 import { Technology } from '../../enterprise/entities/technology'
+import { Injectable } from '@nestjs/common'
 
 interface FetchListTechnologiesByDeveloperUseCaseRequest {
-  developerId: string
+  userId: string
 }
 
 type FetchListTechnologiesByDeveloperUseCaseResponse = Either<
@@ -15,6 +16,7 @@ type FetchListTechnologiesByDeveloperUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchListTechnologiesByDeveloperUseCase {
   constructor(
     private developerTechnologiesRepository: DeveloperTechnologiesRepository,
@@ -22,18 +24,17 @@ export class FetchListTechnologiesByDeveloperUseCase {
   ) {}
 
   async execute({
-    developerId,
+    userId,
   }: FetchListTechnologiesByDeveloperUseCaseRequest): Promise<FetchListTechnologiesByDeveloperUseCaseResponse> {
-    const doesDeveloperExists =
-      await this.developersRepository.findById(developerId)
+    const developer = await this.developersRepository.findByUserId(userId)
 
-    if (!doesDeveloperExists) {
+    if (!developer) {
       return left(new ResourceNotFoundError())
     }
 
     const technologies =
       await this.developerTechnologiesRepository.findManyByDeveloperId(
-        developerId,
+        developer.id.toString(),
       )
 
     return right({

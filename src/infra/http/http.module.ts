@@ -23,6 +23,8 @@ import { EditDeveloperController } from './controllers/edit-developer.controller
 import { EditDeveloperDataUseCase } from '@/domain/easy-work/application/use-cases/edit-developer-data'
 import { FetchListJobsByCompanyController } from './controllers/fetch-list-jobs-by-company.controller'
 import { FetchListJobsByCompanyUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-jobs-by-company'
+import { FetchListTechnologiesByDeveloperController } from './controllers/fetch-list-technologies-by-developer.controller'
+import { FetchListTechnologiesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-technologies-by-developer'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -38,6 +40,7 @@ import { FetchListJobsByCompanyUseCase } from '@/domain/easy-work/application/us
     EditCompanyController,
     EditDeveloperController,
     FetchListJobsByCompanyController,
+    FetchListTechnologiesByDeveloperController,
   ],
   providers: [
     CreateUserUseCase,
@@ -51,6 +54,7 @@ import { FetchListJobsByCompanyUseCase } from '@/domain/easy-work/application/us
     EditCompanyDataUseCase,
     EditDeveloperDataUseCase,
     FetchListJobsByCompanyUseCase,
+    FetchListTechnologiesByDeveloperUseCase,
   ],
 })
 export class HttpModule {}

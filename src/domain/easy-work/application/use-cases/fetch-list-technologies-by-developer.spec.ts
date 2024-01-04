@@ -6,6 +6,10 @@ import { makeDeveloper } from 'test/factories/make-developer'
 import { makeTechnology } from 'test/factories/make-technology'
 import { makeDeveloperTechnology } from 'test/factories/make-developer-technology'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { makeUser } from 'test/factories/make-user'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+
+let inMemoryUsersRepository: InMemoryUsersRepository
 
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
@@ -14,6 +18,8 @@ let sut: FetchListTechnologiesByDeveloperUseCase
 
 describe('Fetch list technologies by developer Use Case', () => {
   beforeEach(() => {
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
     inMemoryDeveloperTechnologiesRepository =
       new InMemoryDeveloperTechnologiesRepository(
@@ -27,6 +33,9 @@ describe('Fetch list technologies by developer Use Case', () => {
   })
 
   it('should be able to fetch all technologies by developer', async () => {
+    const user = makeUser()
+    inMemoryUsersRepository.items.push(user)
+
     const technology01 = makeTechnology({ name: 'Docker' })
     const technology02 = makeTechnology({ name: 'Typescript' })
     const technology03 = makeTechnology({ name: 'Nodejs' })
@@ -35,7 +44,9 @@ describe('Fetch list technologies by developer Use Case', () => {
     inMemoryTechnologiesRepository.items.push(technology02)
     inMemoryTechnologiesRepository.items.push(technology03)
 
-    const developer = makeDeveloper()
+    const developer = makeDeveloper({
+      userId: user.id,
+    })
     inMemoryDevelopersRepository.items.push(developer)
 
     inMemoryTechnologiesRepository.items.map((item) => {
@@ -47,7 +58,7 @@ describe('Fetch list technologies by developer Use Case', () => {
     })
 
     const result = await sut.execute({
-      developerId: developer.id.toString(),
+      userId: user.id.toString(),
     })
 
     expect(result.isRight()).toBe(true)
@@ -61,12 +72,21 @@ describe('Fetch list technologies by developer Use Case', () => {
   })
 
   it('should be able only to fetch technologies of developer', async () => {
+    const user01 = makeUser()
+    const user02 = makeUser()
+    inMemoryUsersRepository.items.push(user01)
+    inMemoryUsersRepository.items.push(user02)
+
     const technology = makeTechnology({ name: 'Docker' })
 
     inMemoryTechnologiesRepository.items.push(technology)
 
-    const developer01 = makeDeveloper()
-    const developer02 = makeDeveloper()
+    const developer01 = makeDeveloper({
+      userId: user01.id,
+    })
+    const developer02 = makeDeveloper({
+      userId: user02.id,
+    })
     inMemoryDevelopersRepository.items.push(developer01)
     inMemoryDevelopersRepository.items.push(developer02)
 
@@ -77,7 +97,7 @@ describe('Fetch list technologies by developer Use Case', () => {
     inMemoryDeveloperTechnologiesRepository.items.push(developerTechnology)
 
     const result = await sut.execute({
-      developerId: developer02.id.toString(),
+      userId: user02.id.toString(),
     })
 
     expect(result.isRight()).toBe(true)
@@ -105,7 +125,7 @@ describe('Fetch list technologies by developer Use Case', () => {
     })
 
     const result = await sut.execute({
-      developerId: 'Invalid-developer-id',
+      userId: 'Invalid-user-id',
     })
 
     expect(result.isLeft()).toBe(true)
