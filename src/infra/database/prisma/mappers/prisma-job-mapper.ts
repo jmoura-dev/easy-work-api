@@ -23,7 +23,7 @@ export class PrismaJobMapper {
       companyId: job.companyId.toString(),
       title: job.title,
       description: job.description,
-      slug: String(job.slug),
+      slug: job.slug.value,
       createdAt: job.created_at,
     }
   }

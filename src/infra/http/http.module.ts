@@ -33,6 +33,8 @@ import { GetJobDetailsByIdController } from './controllers/get-job-details-by-id
 import { GetJobDetailsByIdUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-id'
 import { FetchCandidaturesByDeveloperController } from './controllers/fetch-candidatures-by-developer.controller'
 import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-candidatures-by-developer'
+import { GetDetailsBySlugController } from './controllers/get-details-by-slug.controller'
+import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-slug'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -53,6 +55,7 @@ import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/applicat
     FetchListCandidaturesByJobController,
     GetJobDetailsByIdController,
     FetchCandidaturesByDeveloperController,
+    GetDetailsBySlugController,
   ],
   providers: [
     CreateUserUseCase,
@@ -71,6 +74,7 @@ import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/applicat
     FetchListCandidaturesByJobUseCase,
     GetJobDetailsByIdUseCase,
     FetchCandidaturesByDeveloperUseCase,
+    GetJobDetailsBySlugUseCase,
   ],
 })
 export class HttpModule {}
