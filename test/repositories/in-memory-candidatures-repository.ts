@@ -31,6 +31,17 @@ export class InMemoryCandidaturesRepository implements CandidaturesRepository {
     return candidatures
   }
 
+  async findManyByDeveloperId(
+    { page }: PaginationParams,
+    developerId: string,
+  ): Promise<Candidature[]> {
+    const candidatures = this.items
+      .filter((item) => item.developerId.toString() === developerId)
+      .slice((page - 1) * 20, page * 20)
+
+    return candidatures
+  }
+
   async save(candidature: Candidature): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === candidature.id)
 

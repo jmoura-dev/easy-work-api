@@ -39,6 +39,32 @@ export class PrismaCandidaturesRepository implements CandidaturesRepository {
       where: {
         jobId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: (page - 1) * 20,
+      take: 20,
+    })
+
+    return candidatures.map((candidature) =>
+      PrismaCandidatureMapper.toDomain(candidature),
+    )
+  }
+
+  async findManyByDeveloperId(
+    { page }: PaginationParams,
+    developerId: string,
+  ): Promise<Candidature[]> {
+    const candidatures = await this.prisma.candidature.findMany({
+      where: {
+        developerId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        job: true,
+      },
       skip: (page - 1) * 20,
       take: 20,
     })

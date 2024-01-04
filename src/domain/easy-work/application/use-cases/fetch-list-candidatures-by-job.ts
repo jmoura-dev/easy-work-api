@@ -3,9 +3,9 @@ import { JobsRepository } from '../repositories/jobs-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { Candidature } from '../../enterprise/entities/candidature'
 import { CandidaturesRepository } from '../repositories/candidatures-repository'
+import { Injectable } from '@nestjs/common'
 
 interface FetchListCandidaturesByJobUseCaseRequest {
-  companyId: string
   jobId: string
   page: number
 }
@@ -17,6 +17,7 @@ type FetchListCandidaturesByJobUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchListCandidaturesByJobUseCase {
   constructor(
     private candidaturesRepository: CandidaturesRepository,
@@ -24,17 +25,12 @@ export class FetchListCandidaturesByJobUseCase {
   ) {}
 
   async execute({
-    companyId,
     jobId,
     page,
   }: FetchListCandidaturesByJobUseCaseRequest): Promise<FetchListCandidaturesByJobUseCaseResponse> {
     const job = await this.jobsRepository.findById(jobId)
 
     if (!job) {
-      return left(new ResourceNotFoundError())
-    }
-
-    if (job.companyId.toString() !== companyId) {
       return left(new ResourceNotFoundError())
     }
 

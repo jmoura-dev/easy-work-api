@@ -9,5 +9,10 @@ export abstract class CandidaturesRepository {
     jobId: string,
   ): Promise<Candidature[]>
 
+  abstract findManyByDeveloperId(
+    param: PaginationParams,
+    developerId: string,
+  ): Promise<Candidature[]>
+
   abstract save(candidature: Candidature): Promise<void>
 }

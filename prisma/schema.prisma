@@ -75,8 +75,8 @@ model Job {
 
 model Candidature {
   id          String    @id @default(uuid())
-  developerId String    @unique @map("developer_id")
-  jobId       String    @unique @map("job_id")
+  developerId String    @map("developer_id")
+  jobId       String    @map("job_id")
   status      String
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")

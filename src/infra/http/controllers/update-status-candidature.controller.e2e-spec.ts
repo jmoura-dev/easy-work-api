@@ -86,8 +86,6 @@ describe('Update Status Candidature Controller(E2E)', () => {
       },
     })
 
-    console.log(candidatureOnDatabase)
-
     expect(candidatureOnDatabase).toBeTruthy()
     expect(candidatureOnDatabase?.status).toEqual(
       '[Stage 3] - Avaliando teste técnico.',

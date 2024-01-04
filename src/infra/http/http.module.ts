@@ -27,6 +27,12 @@ import { FetchListTechnologiesByDeveloperController } from './controllers/fetch-
 import { FetchListTechnologiesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-technologies-by-developer'
 import { UpdateStatusCandidatureUseCase } from '@/domain/easy-work/application/use-cases/update-status-candidature'
 import { UpdateStatusCandidatureController } from './controllers/update-status-candidature.controller'
+import { FetchListCandidaturesByJobController } from './controllers/fetch-list-candidatures-by-job.controller'
+import { FetchListCandidaturesByJobUseCase } from '@/domain/easy-work/application/use-cases/fetch-list-candidatures-by-job'
+import { GetJobDetailsByIdController } from './controllers/get-job-details-by-id.controller'
+import { GetJobDetailsByIdUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-id'
+import { FetchCandidaturesByDeveloperController } from './controllers/fetch-candidatures-by-developer.controller'
+import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-candidatures-by-developer'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -44,6 +50,9 @@ import { UpdateStatusCandidatureController } from './controllers/update-status-c
     FetchListJobsByCompanyController,
     FetchListTechnologiesByDeveloperController,
     UpdateStatusCandidatureController,
+    FetchListCandidaturesByJobController,
+    GetJobDetailsByIdController,
+    FetchCandidaturesByDeveloperController,
   ],
   providers: [
     CreateUserUseCase,
@@ -59,6 +68,9 @@ import { UpdateStatusCandidatureController } from './controllers/update-status-c
     FetchListJobsByCompanyUseCase,
     FetchListTechnologiesByDeveloperUseCase,
     UpdateStatusCandidatureUseCase,
+    FetchListCandidaturesByJobUseCase,
+    GetJobDetailsByIdUseCase,
+    FetchCandidaturesByDeveloperUseCase,
   ],
 })
 export class HttpModule {}

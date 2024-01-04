@@ -50,7 +50,6 @@ describe('Fetch list candidatures by job Use case', () => {
     inMemoryCandidaturesRepository.create(candidature02)
 
     const result = await sut.execute({
-      companyId: company.id.toString(),
       jobId,
       page: 1,
     })
@@ -62,34 +61,6 @@ describe('Fetch list candidatures by job Use case', () => {
         expect.objectContaining({ status: 'candidature-02' }),
       ],
     })
-  })
-
-  it('should not be able to fetch list with invalid company', async () => {
-    const company = makeCompany()
-    inMemoryCompaniesRepository.create(company)
-
-    const job = makeJob({
-      companyId: company.id,
-    })
-
-    inMemoryJobsRepository.items.push(job)
-    const jobId = job.id.toString()
-
-    const candidature01 = makeCandidature({
-      jobId: job.id,
-      status: 'candidature-01',
-    })
-
-    inMemoryCandidaturesRepository.create(candidature01)
-
-    const result = await sut.execute({
-      companyId: 'Invalid company id',
-      jobId,
-      page: 1,
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 
   it('should not be able to fetch list with invalid job', async () => {
@@ -110,7 +81,6 @@ describe('Fetch list candidatures by job Use case', () => {
     inMemoryCandidaturesRepository.create(candidature01)
 
     const result = await sut.execute({
-      companyId: company.id.toString(),
       jobId: 'Invalid job id',
       page: 1,
     })
