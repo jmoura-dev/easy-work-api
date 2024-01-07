@@ -5,7 +5,7 @@ import { NotificationsRepository } from '../repositories/notifications-repositor
 import { Injectable } from '@nestjs/common'
 
 export interface SendNotificationUseCaseRequest {
-  developerId: string
+  recipientId: string
   title: string
   content: string
 }
@@ -22,12 +22,12 @@ export class SendNotificationUseCase {
   constructor(private notificationsRepository: NotificationsRepository) {}
 
   async execute({
-    developerId,
+    recipientId,
     title,
     content,
   }: SendNotificationUseCaseRequest): Promise<SendNotificationUseCaseResponse> {
     const notification = Notification.create({
-      developerId: new UniqueEntityID(developerId),
+      developerId: new UniqueEntityID(recipientId),
       title,
       content,
     })

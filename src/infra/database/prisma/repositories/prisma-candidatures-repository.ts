@@ -4,6 +4,7 @@ import { Candidature } from '@/domain/easy-work/enterprise/entities/candidature'
 import { PrismaCandidatureMapper } from '../mappers/prisma-candidature-mapper'
 import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
+import { DomainEvents } from '@/core/events/domain-events'
 
 @Injectable()
 export class PrismaCandidaturesRepository implements CandidaturesRepository {
@@ -83,5 +84,7 @@ export class PrismaCandidaturesRepository implements CandidaturesRepository {
       },
       data,
     })
+
+    DomainEvents.dispatchEventsForAggregate(candidature.id)
   }
 }

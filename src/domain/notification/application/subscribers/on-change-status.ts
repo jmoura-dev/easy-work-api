@@ -31,7 +31,7 @@ export class OnChangeStatus implements EventHandler {
 
     if (developer) {
       await this.sendNotification.execute({
-        developerId: developer.id.toString(),
+        recipientId: developer.id.toString(),
         title: 'Status alterado',
         content: `O novo status da encomenda é de "${status}"`,
       })

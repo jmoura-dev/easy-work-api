@@ -6,7 +6,7 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { Injectable } from '@nestjs/common'
 
 interface ReadNotificationUseCaseRequest {
-  developerId: string
+  recipientId: string
   notificationId: string
 }
 
@@ -22,7 +22,7 @@ export class ReadNotificationUseCase {
   constructor(private notificationsRepository: NotificationsRepository) {}
 
   async execute({
-    developerId,
+    recipientId,
     notificationId,
   }: ReadNotificationUseCaseRequest): Promise<ReadNotificationUseCaseResponse> {
     const notification =
@@ -32,7 +32,7 @@ export class ReadNotificationUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (developerId !== notification.developerId.toString()) {
+    if (recipientId !== notification.developerId.toString()) {
       return left(new NotAllowedError())
     }
 

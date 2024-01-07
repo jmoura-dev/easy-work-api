@@ -19,7 +19,7 @@ describe('Read Notification', () => {
     await inMemoryNotificationsRepository.create(notification)
 
     const result = await sut.execute({
-      developerId: notification.developerId.toString(),
+      recipientId: notification.developerId.toString(),
       notificationId: notification.id.toString(),
     })
 
@@ -38,7 +38,7 @@ describe('Read Notification', () => {
 
     const result = await sut.execute({
       notificationId: notification.id.toString(),
-      developerId: 'developer-2',
+      recipientId: 'developer-2',
     })
 
     expect(result.isLeft()).toBe(true)
