@@ -1,10 +1,10 @@
 - [x] It must be possible to register as a developer or company;
 - [x] It must be possible to authenticate to access some functions;
-- [ ] It must be possible to change developer or company data;
-- [ ] A company can register a new vacancy;
-- [ ] A developer can register for a new vacancy;
-- [ ] The developer can search for a list of all the vacancies he has applied for;
-- [ ] Whenever the status of the application changes, a notification will be sent to the candidate;
-- [ ] A developer cannot register for the same vacancy more than once;
-- [ ] The company can search for the list of developers who registered for the posted vacancy;
+- [x] It must be possible to change developer or company data;
+- [x] A company can register a new vacancy;
+- [x] A developer can register for a new vacancy;
+- [x] The developer can search for a list of all the vacancies he has applied for;
+- [x] Whenever the status of the application changes, a notification will be sent to the candidate;
+- [x] A developer cannot register for the same vacancy more than once;
+- [x] The company can search for the list of developers who registered for the posted vacancy;
 - [ ] The developer will be able to change the profile avatar;
