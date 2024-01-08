@@ -35,9 +35,12 @@ import { FetchCandidaturesByDeveloperController } from './controllers/fetch-cand
 import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-candidatures-by-developer'
 import { GetDetailsBySlugController } from './controllers/get-details-by-slug.controller'
 import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-slug'
+import { UploadAvatarController } from './controllers/upload-avatar.controller'
+import { UploadAndCreateAvatarUseCase } from '@/domain/easy-work/application/use-cases/upload-and-create-avatar'
+import { StorageModule } from '../storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     CreateUserController,
     AuthenticateUserController,
@@ -56,6 +59,7 @@ import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-c
     GetJobDetailsByIdController,
     FetchCandidaturesByDeveloperController,
     GetDetailsBySlugController,
+    UploadAvatarController,
   ],
   providers: [
     CreateUserUseCase,
@@ -75,6 +79,7 @@ import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-c
     GetJobDetailsByIdUseCase,
     FetchCandidaturesByDeveloperUseCase,
     GetJobDetailsBySlugUseCase,
+    UploadAndCreateAvatarUseCase,
   ],
 })
 export class HttpModule {}
