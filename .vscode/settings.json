@@ -4,6 +4,7 @@
     "cnpj",
     "encrypter",
     "Encrypter",
+    "hasher",
     "Hasher",
     "originalname"
   ]

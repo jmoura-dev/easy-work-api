@@ -38,6 +38,8 @@ import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-c
 import { UploadAvatarController } from './controllers/upload-avatar.controller'
 import { UploadAndCreateAvatarUseCase } from '@/domain/easy-work/application/use-cases/upload-and-create-avatar'
 import { StorageModule } from '../storage/storage.module'
+import { EditUserController } from './controllers/edit-user.controller'
+import { EditUserDataUseCase } from '@/domain/easy-work/application/use-cases/edit-user-data'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -60,6 +62,7 @@ import { StorageModule } from '../storage/storage.module'
     FetchCandidaturesByDeveloperController,
     GetDetailsBySlugController,
     UploadAvatarController,
+    EditUserController,
   ],
   providers: [
     CreateUserUseCase,
@@ -80,6 +83,7 @@ import { StorageModule } from '../storage/storage.module'
     FetchCandidaturesByDeveloperUseCase,
     GetJobDetailsBySlugUseCase,
     UploadAndCreateAvatarUseCase,
+    EditUserDataUseCase,
   ],
 })
 export class HttpModule {}
