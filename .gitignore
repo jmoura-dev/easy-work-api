@@ -4,6 +4,7 @@
 FAKE-README.MD
 data
 .env
+.env.test
 
 # Logs
 logs

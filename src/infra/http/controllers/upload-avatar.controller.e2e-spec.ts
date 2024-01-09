@@ -33,8 +33,6 @@ describe('Upload Avatar Controller (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .attach('file', './test/e2e/sample-upload.png')
 
-    console.log(response)
-
     expect(response.statusCode).toEqual(201)
     expect(response.body).toEqual({
       avatarId: expect.any(String),
