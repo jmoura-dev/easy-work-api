@@ -1,25 +1,46 @@
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import { ReadNotificationUseCase } from './read-notification'
 import { makeNotification } from 'test/factories/make-notification'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
+import { makeUser } from 'test/factories/make-user'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { makeDeveloper } from 'test/factories/make-developer'
 
+let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: ReadNotificationUseCase
 
 describe('Read Notification', () => {
   beforeEach(() => {
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
-    sut = new ReadNotificationUseCase(inMemoryNotificationsRepository)
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    sut = new ReadNotificationUseCase(
+      inMemoryNotificationsRepository,
+      inMemoryDevelopersRepository,
+    )
   })
 
   it('should be able to read a notification', async () => {
-    const notification = makeNotification()
+    const user = makeUser()
+    inMemoryUsersRepository.items.push(user)
+
+    const developer = makeDeveloper({
+      userId: user.id,
+    })
+    inMemoryDevelopersRepository.items.push(developer)
+
+    const notification = makeNotification({
+      developerId: developer.id,
+    })
 
     await inMemoryNotificationsRepository.create(notification)
 
     const result = await sut.execute({
-      recipientId: notification.developerId.toString(),
+      recipientId: user.id.toString(),
       notificationId: notification.id.toString(),
     })
 
@@ -30,15 +51,13 @@ describe('Read Notification', () => {
   })
 
   it('should not be able to read a notification from another user', async () => {
-    const notification = makeNotification({
-      developerId: new UniqueEntityID('developer-1'),
-    })
+    const notification = makeNotification()
 
     await inMemoryNotificationsRepository.create(notification)
 
     const result = await sut.execute({
       notificationId: notification.id.toString(),
-      recipientId: 'developer-2',
+      recipientId: 'invalid-user',
     })
 
     expect(result.isLeft()).toBe(true)

@@ -11,9 +11,12 @@ import { makeDeveloper } from 'test/factories/make-Developer'
 import { makeCandidature } from 'test/factories/make-Candidature'
 import { InMemoryCandidaturesRepository } from 'test/repositories/in-memory-Candidatures-repository'
 import { waitFor } from 'test/utils/wait-for'
+import { InMemoryJobsRepository } from 'test/repositories/in-memory-jobs-repository'
+import { makeJob } from 'test/factories/make-job'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
+let inMemoryJobsRepository: InMemoryJobsRepository
 
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
@@ -26,6 +29,7 @@ describe('On change status', () => {
   beforeEach(() => {
     inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
     inMemoryCandidaturesRepository = new InMemoryCandidaturesRepository()
+    inMemoryJobsRepository = new InMemoryJobsRepository()
 
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     sendNotificationUseCase = new SendNotificationUseCase(
@@ -34,17 +38,28 @@ describe('On change status', () => {
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
-    new OnChangeStatus(sendNotificationUseCase, inMemoryDevelopersRepository)
+    new OnChangeStatus(
+      sendNotificationUseCase,
+      inMemoryDevelopersRepository,
+      inMemoryJobsRepository,
+    )
   })
 
   it('should send a notification when the status changes', async () => {
-    const developer = makeDeveloper()
-    const candidature = makeCandidature({ developerId: developer.id })
+    const job = makeJob()
+    inMemoryJobsRepository.create(job)
 
+    const developer = makeDeveloper()
     inMemoryDevelopersRepository.create(developer)
+
+    const candidature = makeCandidature({
+      jobId: job.id,
+      developerId: developer.id,
+      status: 'Aguardando atualizações',
+    })
     inMemoryCandidaturesRepository.create(candidature)
 
-    candidature.status = 'Entregue'
+    candidature.status = 'Aprovado'
 
     inMemoryCandidaturesRepository.save(candidature)
 

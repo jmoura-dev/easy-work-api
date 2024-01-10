@@ -4,6 +4,7 @@ import { NotificationsRepository } from '../repositories/notifications-repositor
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { Injectable } from '@nestjs/common'
+import { DevelopersRepository } from '@/domain/easy-work/application/repositories/developers-repository'
 
 interface ReadNotificationUseCaseRequest {
   recipientId: string
@@ -19,7 +20,10 @@ type ReadNotificationUseCaseResponse = Either<
 
 @Injectable()
 export class ReadNotificationUseCase {
-  constructor(private notificationsRepository: NotificationsRepository) {}
+  constructor(
+    private notificationsRepository: NotificationsRepository,
+    private developersRepository: DevelopersRepository,
+  ) {}
 
   async execute({
     recipientId,
@@ -32,7 +36,13 @@ export class ReadNotificationUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    if (recipientId !== notification.developerId.toString()) {
+    const developer = await this.developersRepository.findByUserId(recipientId)
+
+    if (!developer) {
+      return left(new NotAllowedError())
+    }
+
+    if (developer.id.toString() !== notification.developerId.toString()) {
       return left(new NotAllowedError())
     }
 

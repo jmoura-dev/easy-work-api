@@ -11,6 +11,7 @@ import { CandidatureFactory } from 'test/factories/make-candidature'
 import { JobFactory } from 'test/factories/make-job'
 import { CompanyFactory } from 'test/factories/make-company'
 import { waitFor } from 'test/utils/wait-for'
+import { DomainEvents } from '@/core/events/domain-events'
 
 describe('Notification On Database (E2E)', () => {
   let app: INestApplication
@@ -43,6 +44,8 @@ describe('Notification On Database (E2E)', () => {
     companyFactory = moduleRef.get(CompanyFactory)
     candidatureFactory = moduleRef.get(CandidatureFactory)
     jobFactory = moduleRef.get(JobFactory)
+
+    DomainEvents.shouldRun = true
 
     await app.init()
   })
@@ -85,7 +88,6 @@ describe('Notification On Database (E2E)', () => {
           recipientId: developer.id.toString(),
         },
       })
-      console.log(notificationOnDatabase)
 
       expect(notificationOnDatabase).toBeTruthy()
     })
