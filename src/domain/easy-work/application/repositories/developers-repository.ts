@@ -1,5 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Developer } from '../../enterprise/entities/user-developer'
+import { DeveloperWithTechnologies } from '../../enterprise/entities/value-objects/developer-with-technologies'
 
 export interface FindManyProps extends PaginationParams {
   name?: string
@@ -11,12 +12,12 @@ export abstract class DevelopersRepository {
   abstract create(developer: Developer): Promise<void>
   abstract findById(id: string): Promise<Developer | null>
   abstract findByUserId(userId: string): Promise<Developer | null>
-  abstract findMany({
+  abstract findManyWithTechnologies({
     name,
     occupation_area,
     techs,
     page,
-  }: FindManyProps): Promise<Developer[]>
+  }: FindManyProps): Promise<DeveloperWithTechnologies[]>
 
   abstract save(developer: Developer): Promise<void>
 }

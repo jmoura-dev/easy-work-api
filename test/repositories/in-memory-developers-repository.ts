@@ -42,7 +42,7 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
     return developer
   }
 
-  async findMany({
+  async findManyWithTechnologies({
     name,
     occupation_area,
     techs,

@@ -1,5 +1,6 @@
-import { Developer } from '../../enterprise/entities/user-developer'
+import { Injectable } from '@nestjs/common'
 import { DevelopersRepository } from '../repositories/developers-repository'
+import { DeveloperWithTechnologies } from '../../enterprise/entities/value-objects/developer-with-technologies'
 
 interface GetAllDevelopersUseCaseRequest {
   name?: string
@@ -9,9 +10,10 @@ interface GetAllDevelopersUseCaseRequest {
 }
 
 interface GetAllDevelopersUseCaseResponse {
-  developers: Developer[]
+  developers: DeveloperWithTechnologies[]
 }
 
+@Injectable()
 export class GetAllDevelopersUseCase {
   constructor(private developersRepository: DevelopersRepository) {}
 
@@ -21,12 +23,14 @@ export class GetAllDevelopersUseCase {
     techs,
     page,
   }: GetAllDevelopersUseCaseRequest): Promise<GetAllDevelopersUseCaseResponse> {
-    const developers = await this.developersRepository.findMany({
-      name,
-      occupation_area,
-      techs,
-      page,
-    })
+    const developers = await this.developersRepository.findManyWithTechnologies(
+      {
+        name,
+        occupation_area,
+        techs,
+        page,
+      },
+    )
 
     return {
       developers,

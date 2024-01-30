@@ -42,6 +42,8 @@ import { EditUserController } from './controllers/edit-user.controller'
 import { EditUserDataUseCase } from '@/domain/easy-work/application/use-cases/edit-user-data'
 import { ReadNotificationController } from './controllers/read-notification.controller'
 import { ReadNotificationUseCase } from '@/domain/notification/application/use-cases/read-notification'
+import { GetDevelopersByQueriesController } from './controllers/get-developers-by-filters.controller'
+import { GetAllDevelopersUseCase } from '@/domain/easy-work/application/use-cases/get-all-developers'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -66,6 +68,7 @@ import { ReadNotificationUseCase } from '@/domain/notification/application/use-c
     UploadAvatarController,
     EditUserController,
     ReadNotificationController,
+    GetDevelopersByQueriesController,
   ],
   providers: [
     CreateUserUseCase,
@@ -88,6 +91,7 @@ import { ReadNotificationUseCase } from '@/domain/notification/application/use-c
     UploadAndCreateAvatarUseCase,
     EditUserDataUseCase,
     ReadNotificationUseCase,
+    GetAllDevelopersUseCase,
   ],
 })
 export class HttpModule {}
