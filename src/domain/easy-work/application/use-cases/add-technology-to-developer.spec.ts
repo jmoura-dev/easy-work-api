@@ -8,22 +8,30 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeDeveloperTechnology } from 'test/factories/make-developer-technology'
 import { TechnologyAlreadyAddedInTheDeveloper } from './errors/technology-already-added-in-the-developer.erro'
 import { makeUser } from 'test/factories/make-user'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryUsersRepository: InMemoryUsersRepository
 
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 let sut: AddTechnologyToDeveloperUseCase
 
 describe('Add technology to developer Use Case', () => {
   beforeEach(() => {
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
-
+    inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryDeveloperTechnologiesRepository =
       new InMemoryDeveloperTechnologiesRepository(
         inMemoryTechnologiesRepository,
       )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
+
     sut = new AddTechnologyToDeveloperUseCase(
       inMemoryDeveloperTechnologiesRepository,
       inMemoryDevelopersRepository,

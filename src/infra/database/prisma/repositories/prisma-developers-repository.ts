@@ -1,4 +1,7 @@
-import { DevelopersRepository } from '@/domain/easy-work/application/repositories/developers-repository'
+import {
+  DevelopersRepository,
+  FindManyProps,
+} from '@/domain/easy-work/application/repositories/developers-repository'
 import { Developer } from '@/domain/easy-work/enterprise/entities/user-developer'
 import { Injectable } from '@nestjs/common'
 import { PrismaDeveloperMapper } from '../mappers/prisma-developer-mapper'
@@ -42,6 +45,15 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     }
 
     return PrismaDeveloperMapper.toDomain(developer)
+  }
+
+  async findMany({
+    name,
+    occupation_area,
+    techs,
+    page,
+  }: FindManyProps): Promise<Developer[]> {
+    throw new Error('Method not implemented.')
   }
 
   async save(developer: Developer): Promise<void> {

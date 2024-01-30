@@ -25,7 +25,11 @@ describe('Fetch list technologies by developer Use Case', () => {
       new InMemoryDeveloperTechnologiesRepository(
         inMemoryTechnologiesRepository,
       )
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
     sut = new FetchListTechnologiesByDeveloperUseCase(
       inMemoryDeveloperTechnologiesRepository,
       inMemoryDevelopersRepository,

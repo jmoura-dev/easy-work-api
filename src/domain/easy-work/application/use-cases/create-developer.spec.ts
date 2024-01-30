@@ -5,15 +5,30 @@ import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repos
 import { makeUser } from 'test/factories/make-user'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
 
-let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: CreateDeveloperUseCase
 
 describe('Create developer Use case', () => {
   beforeEach(() => {
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
     inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
 
     sut = new CreateDeveloperUseCase(
       inMemoryDevelopersRepository,

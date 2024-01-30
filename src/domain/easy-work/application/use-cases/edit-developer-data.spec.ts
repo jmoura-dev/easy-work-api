@@ -3,13 +3,31 @@ import { makeDeveloper } from 'test/factories/make-developer'
 import { EditDeveloperDataUseCase } from './edit-developer-data'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { makeUser } from 'test/factories/make-user'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+
+let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: EditDeveloperDataUseCase
 
 describe('Edit developer data Use case', () => {
   beforeEach(() => {
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
     sut = new EditDeveloperDataUseCase(inMemoryDevelopersRepository)
   })
 

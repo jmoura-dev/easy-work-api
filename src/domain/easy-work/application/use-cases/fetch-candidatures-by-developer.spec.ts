@@ -7,6 +7,13 @@ import { makeJob } from 'test/factories/make-job'
 import { InMemoryJobsRepository } from 'test/repositories/in-memory-jobs-repository'
 import { makeUser } from 'test/factories/make-user'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+
+let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
@@ -16,7 +23,18 @@ let sut: FetchCandidaturesByDeveloperUseCase
 
 describe('Fetch candidatures by developer', () => {
   beforeEach(() => {
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
     inMemoryCandidaturesRepository = new InMemoryCandidaturesRepository()
     inMemoryJobsRepository = new InMemoryJobsRepository()
 

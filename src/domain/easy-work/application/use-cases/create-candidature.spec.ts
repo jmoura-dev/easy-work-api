@@ -7,6 +7,13 @@ import { makeJob } from 'test/factories/make-job'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { makeUser } from 'test/factories/make-user'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+
+let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
@@ -15,8 +22,19 @@ let sut: CreateCandidatureUseCase
 
 describe('Create candidature Use case', () => {
   beforeEach(() => {
+    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
     inMemoryCandidaturesRepository = new InMemoryCandidaturesRepository()
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
     inMemoryJobsRepository = new InMemoryJobsRepository()
 
     sut = new CreateCandidatureUseCase(
