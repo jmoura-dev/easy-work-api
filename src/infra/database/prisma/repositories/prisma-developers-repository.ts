@@ -56,10 +56,10 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     techs,
     page,
   }: FindManyProps): Promise<DeveloperWithTechnologies[]> {
-    const where: Prisma.DeveloperWhereInput = {}
+    const initialWhere: Prisma.DeveloperWhereInput = {}
 
     if (name) {
-      where.user = {
+      initialWhere.user = {
         name: {
           contains: name,
         },
@@ -67,23 +67,11 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     }
 
     if (occupation_area) {
-      where.occupation_area = occupation_area
+      initialWhere.occupation_area = occupation_area
     }
 
-    if (techs && techs.length > 0) {
-      where.developerTechnology = {
-        every: {
-          technology: {
-            name: {
-              in: techs,
-            },
-          },
-        },
-      }
-    }
-
-    const developers = await this.prisma.developer.findMany({
-      where,
+    const developersNoFilterByTech = await this.prisma.developer.findMany({
+      where: initialWhere,
       include: {
         user: true,
         developerTechnology: {
@@ -95,9 +83,23 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
       skip: (page - 1) * 20,
       take: 20,
     })
-    console.log(where.developerTechnology?.every?.technology)
 
-    return developers.map((developer) =>
+    if (!techs || techs.length === 0) {
+      return developersNoFilterByTech.map((developer) =>
+        PrismaDeveloperWithTechnologiesMapper.toDomain(developer),
+      )
+    }
+
+    const filteredDevelopersWithTechs = developersNoFilterByTech.filter(
+      (developer) =>
+        techs.every((tech) =>
+          developer.developerTechnology.find(
+            (devTech) => devTech.technology.name === tech,
+          ),
+        ),
+    )
+
+    return filteredDevelopersWithTechs.map((developer) =>
       PrismaDeveloperWithTechnologiesMapper.toDomain(developer),
     )
   }

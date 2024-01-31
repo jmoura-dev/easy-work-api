@@ -9,7 +9,12 @@ export class DeveloperWithTechnologiesPresenter {
       price_per_hour: developerWithTechnologies.price_per_hour,
       available_for_contract: developerWithTechnologies.available_for_contract,
       about: developerWithTechnologies.about,
-      techs: developerWithTechnologies.techs,
+      techs: developerWithTechnologies.techs.map((tech) => {
+        return {
+          id: tech.id.toString(),
+          name: tech.name,
+        }
+      }),
     }
   }
 }
