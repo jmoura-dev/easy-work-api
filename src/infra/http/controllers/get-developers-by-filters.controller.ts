@@ -15,7 +15,7 @@ const pageQueryParamSchema = z
 const createBodySchema = z.object({
   name: z.string().optional(),
   occupation_area: z.string().optional(),
-  techs: z.array(z.string()),
+  techs: z.array(z.string()).optional().default([]),
 })
 
 const pageZodQueryParamPipe = new ZodValidationPipe(pageQueryParamSchema)
