@@ -6,6 +6,8 @@ import { Developer } from '@/domain/easy-work/enterprise/entities/user-developer
 import { InMemoryUsersRepository } from './in-memory-users-repository'
 import { InMemoryDeveloperTechnologiesRepository } from './in-memory-developer-technologies-repository'
 import { InMemoryTechnologiesRepository } from './in-memory-technologies-repository'
+import { DeveloperWithTechnologies } from '@/domain/easy-work/enterprise/entities/value-objects/developer-with-technologies'
+import { Technology } from '@/domain/easy-work/enterprise/entities/technology'
 
 export class InMemoryDevelopersRepository implements DevelopersRepository {
   constructor(
@@ -47,7 +49,7 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
     occupation_area,
     techs,
     page,
-  }: FindManyProps): Promise<Developer[]> {
+  }: FindManyProps): Promise<DeveloperWithTechnologies[]> {
     let users = this.inMemoryUsersRepository.items
 
     if (name) {
@@ -84,7 +86,41 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
           )
         : filteredByArea
 
-    const developers = filteredByTechnology.slice((page - 1) * 20, page * 20)
+    const technologies = techs.map((tech) => {
+      const isTechValid = this.inMemoryTechnologiesRepository.findByName(tech)
+
+      if (!isTechValid) {
+        throw new Error(`This technology ${tech} does not exist`)
+      }
+
+      return Technology.create({
+        name: tech,
+      })
+    })
+
+    const developers = filteredByTechnology
+      .slice((page - 1) * 20, page * 20)
+      .map((developer) => {
+        const user = this.inMemoryUsersRepository.items.find(
+          (user) => user.id === developer.userId,
+        )
+
+        if (!user) {
+          throw new Error(
+            `User with ID "${developer.userId.toString()}" does not exist`,
+          )
+        }
+
+        return DeveloperWithTechnologies.create({
+          developerId: developer.id,
+          userName: user.name,
+          about: user.about,
+          occupation_area: developer.occupation_area,
+          available_for_contract: developer.available_for_contract,
+          price_per_hour: developer.price_per_hour,
+          techs: technologies,
+        })
+      })
 
     return developers
   }

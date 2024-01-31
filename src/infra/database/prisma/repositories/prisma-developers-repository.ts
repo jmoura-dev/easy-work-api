@@ -95,6 +95,7 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
       skip: (page - 1) * 20,
       take: 20,
     })
+    console.log(where.developerTechnology?.every?.technology)
 
     return developers.map((developer) =>
       PrismaDeveloperWithTechnologiesMapper.toDomain(developer),

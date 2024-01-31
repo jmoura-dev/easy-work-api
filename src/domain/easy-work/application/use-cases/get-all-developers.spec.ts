@@ -52,8 +52,8 @@ describe('Get all developers Use Case', () => {
 
     expect(result.developers.length).toBe(2)
     expect(result.developers).toEqual([
-      expect.objectContaining({ id: new UniqueEntityID('21') }),
-      expect.objectContaining({ id: new UniqueEntityID('22') }),
+      expect.objectContaining({ developerId: new UniqueEntityID('21') }),
+      expect.objectContaining({ developerId: new UniqueEntityID('22') }),
     ])
   })
 
@@ -98,7 +98,10 @@ describe('Get all developers Use Case', () => {
 
     expect(result.developers.length).toBe(1)
     expect(result.developers).toEqual([
-      expect.objectContaining({ id: new UniqueEntityID('3') }),
+      expect.objectContaining({
+        developerId: new UniqueEntityID('3'),
+        occupation_area: 'FullStack',
+      }),
     ])
   })
 })

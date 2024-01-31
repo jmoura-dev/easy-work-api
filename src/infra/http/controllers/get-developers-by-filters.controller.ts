@@ -3,6 +3,7 @@ import { Body, Controller, Get, Query } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { DeveloperWithTechnologiesPresenter } from '../presenters/developer-with-technologies-presenter'
+import { Public } from '@/infra/auth/public'
 
 const pageQueryParamSchema = z
   .string()
@@ -24,6 +25,7 @@ type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 type PageRequestBodySchema = z.infer<typeof createBodySchema>
 
 @Controller('/developers/list')
+@Public()
 export class GetDevelopersByQueriesController {
   constructor(private getAllDevelopers: GetAllDevelopersUseCase) {}
 
