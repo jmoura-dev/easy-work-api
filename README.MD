@@ -39,5 +39,3 @@ Infrastructure layer using the domain-based(DDD) NestJS Framework..
 - cd easy-work-api
 - pnpm i
 - pnpm run start:dev
-
-[Link-Deploy](https://easy-work.onrender.com)
