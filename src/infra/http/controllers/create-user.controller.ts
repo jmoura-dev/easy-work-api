@@ -52,5 +52,9 @@ export class CreateUserController {
           throw new BadRequestException(error.message)
       }
     }
+
+    return {
+      userId: result.value.userId,
+    }
   }
 }

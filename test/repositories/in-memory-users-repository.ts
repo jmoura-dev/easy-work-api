@@ -4,8 +4,10 @@ import { User } from '@/domain/easy-work/enterprise/entities/user'
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
 
-  async create(user: User): Promise<void> {
+  async create(user: User): Promise<User> {
     this.items.push(user)
+
+    return user
   }
 
   async findById(id: string): Promise<User | null> {

@@ -14,7 +14,12 @@ interface CreateUserUseCaseRequest {
   about?: string
 }
 
-type CreateUserUseCaseResponse = Either<EmailAlreadyExists, null>
+type CreateUserUseCaseResponse = Either<
+  EmailAlreadyExists,
+  {
+    userId: string
+  }
+>
 
 @Injectable()
 export class CreateUserUseCase {
@@ -46,8 +51,10 @@ export class CreateUserUseCase {
       about,
     })
 
-    await this.usersRepository.create(user)
+    const userCreated = await this.usersRepository.create(user)
 
-    return right(null)
+    return right({
+      userId: userCreated.id.toString(),
+    })
   }
 }
