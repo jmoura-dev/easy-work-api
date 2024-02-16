@@ -8,17 +8,22 @@ import { GetAllDevelopersUseCase } from './get-all-developers'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { makeTechnology } from 'test/factories/make-technology'
 import { makeDeveloperTechnology } from 'test/factories/make-developer-technology'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let sut: GetAllDevelopersUseCase
 
 describe('Get all developers Use Case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
 
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
     inMemoryDeveloperTechnologiesRepository =

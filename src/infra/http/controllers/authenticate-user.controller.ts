@@ -11,6 +11,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AuthenticateUserUseCase } from '@/domain/easy-work/application/use-cases/authenticate-user'
 import { WrongCredentialsError } from '@/domain/easy-work/application/use-cases/errors/wrong-credentials-error'
 import { Public } from '@/infra/auth/public'
+import { UserWithRolePresenter } from '../presenters/user-with-role-presenter'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -48,8 +49,12 @@ export class AuthenticateUserController {
     }
 
     const { accessToken } = result.value
+    const { user } = result.value
+
+    const userWithRole = UserWithRolePresenter.toHttp(user)
 
     return {
+      user: userWithRole,
       access_token: accessToken,
     }
   }

@@ -4,9 +4,19 @@ import { FakeHasher } from 'test/cryptograph/fake-hasher'
 import { FakeEncrypter } from 'test/cryptograph/fake-encrypter'
 import { makeUser } from 'test/factories/make-user'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
+import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
 
 let fakeHasher: FakeHasher
 let fakeEncrypter: FakeEncrypter
+
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: AuthenticateUserUseCase
@@ -16,7 +26,24 @@ describe('Authenticate User Use Case', () => {
     fakeHasher = new FakeHasher()
     fakeEncrypter = new FakeEncrypter()
 
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
+
     sut = new AuthenticateUserUseCase(
       inMemoryUsersRepository,
       fakeEncrypter,
@@ -38,7 +65,7 @@ describe('Authenticate User Use Case', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(result.value).toEqual({
+    expect(result.value).toMatchObject({
       accessToken: expect.any(String),
     })
   })

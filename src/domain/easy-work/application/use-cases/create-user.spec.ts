@@ -3,6 +3,16 @@ import { CreateUserUseCase } from './create-user'
 import { FakeHasher } from 'test/cryptograph/fake-hasher'
 import { makeUser } from 'test/factories/make-user'
 import { EmailAlreadyExists } from './errors/email-already-exists-error'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
+import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: CreateUserUseCase
@@ -10,7 +20,23 @@ let fakeHasher: FakeHasher
 
 describe('Create User Use Case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
     fakeHasher = new FakeHasher()
     sut = new CreateUserUseCase(inMemoryUsersRepository, fakeHasher)
   })

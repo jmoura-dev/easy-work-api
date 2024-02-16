@@ -10,12 +10,14 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
 import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
 let inMemoryJobsRepository: InMemoryJobsRepository
 
@@ -23,7 +25,10 @@ let sut: FetchCandidaturesByDeveloperUseCase
 
 describe('Fetch candidatures by developer', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
     inMemoryDeveloperTechnologiesRepository =
       new InMemoryDeveloperTechnologiesRepository(

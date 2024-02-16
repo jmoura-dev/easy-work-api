@@ -4,6 +4,7 @@ import { HashComparer } from '../cryptography/hash-comparer'
 import { UsersRepository } from '../repositories/users-repository'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { Injectable } from '@nestjs/common'
+import { UserWithRole } from '../../enterprise/entities/value-objects/user-with-role'
 
 interface AuthenticateUserUseCaseRequest {
   email: string
@@ -12,7 +13,10 @@ interface AuthenticateUserUseCaseRequest {
 
 type AuthenticateUserUseCaseResponse = Either<
   WrongCredentialsError,
-  { accessToken: string }
+  {
+    accessToken: string
+    user: UserWithRole
+  }
 >
 
 @Injectable()
@@ -29,6 +33,8 @@ export class AuthenticateUserUseCase {
   }: AuthenticateUserUseCaseRequest): Promise<AuthenticateUserUseCaseResponse> {
     const user = await this.usersRepository.findByEmail(email)
 
+    console.log(user)
+
     if (!user) {
       return left(new WrongCredentialsError())
     }
@@ -43,10 +49,11 @@ export class AuthenticateUserUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: user.id.toString(),
+      sub: user.userId.toString(),
     })
 
     return right({
+      user,
       accessToken,
     })
   }

@@ -5,6 +5,16 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { FakeHasher } from 'test/cryptograph/fake-hasher'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let fakeHasher: FakeHasher
@@ -12,7 +22,23 @@ let sut: EditUserDataUseCase
 
 describe('Edit user data Use case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
     fakeHasher = new FakeHasher()
     sut = new EditUserDataUseCase(
       inMemoryUsersRepository,

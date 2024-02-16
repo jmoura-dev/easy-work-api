@@ -3,6 +3,8 @@ import { User } from '@/domain/easy-work/enterprise/entities/user'
 import { Injectable } from '@nestjs/common'
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper'
 import { PrismaService } from '../prisma.service'
+import { UserWithRole } from '@/domain/easy-work/enterprise/entities/value-objects/user-with-role'
+import { PrismaUserWithRoleMapper } from '../mappers/prisma-user-with-role-mapper'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -32,10 +34,14 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserWithRole | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
+      },
+      include: {
+        company: true,
+        developer: true,
       },
     })
 
@@ -43,7 +49,7 @@ export class PrismaUsersRepository implements UsersRepository {
       return null
     }
 
-    return PrismaUserMapper.toDomain(user)
+    return PrismaUserWithRoleMapper.toDomain(user)
   }
 
   async save(user: User): Promise<void> {

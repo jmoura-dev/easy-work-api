@@ -5,15 +5,37 @@ import { makeUser } from 'test/factories/make-user'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-developers-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: CreateCompanyUseCase
 
 describe('Create company Use case', () => {
   beforeEach(() => {
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
     inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
     sut = new CreateCompanyUseCase(
       inMemoryCompaniesRepository,
       inMemoryUsersRepository,

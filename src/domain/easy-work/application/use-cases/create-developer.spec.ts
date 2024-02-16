@@ -7,23 +7,31 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
 import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+
 let sut: CreateDeveloperUseCase
 
 describe('Create developer Use case', () => {
   beforeEach(() => {
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
     inMemoryDeveloperTechnologiesRepository =
       new InMemoryDeveloperTechnologiesRepository(
         inMemoryTechnologiesRepository,
       )
 
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
     inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
       inMemoryUsersRepository,
       inMemoryDeveloperTechnologiesRepository,

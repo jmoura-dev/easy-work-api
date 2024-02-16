@@ -8,17 +8,22 @@ import { makeDeveloperTechnology } from 'test/factories/make-developer-technolog
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { makeUser } from 'test/factories/make-user'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 
 let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 let sut: FetchListTechnologiesByDeveloperUseCase
 
 describe('Fetch list technologies by developer Use Case', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
 
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
     inMemoryDeveloperTechnologiesRepository =

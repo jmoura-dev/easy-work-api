@@ -9,8 +9,10 @@ import { makeDeveloperTechnology } from 'test/factories/make-developer-technolog
 import { TechnologyAlreadyAddedInTheDeveloper } from './errors/technology-already-added-in-the-developer.erro'
 import { makeUser } from 'test/factories/make-user'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 let inMemoryUsersRepository: InMemoryUsersRepository
 
@@ -20,11 +22,14 @@ let sut: AddTechnologyToDeveloperUseCase
 describe('Add technology to developer Use Case', () => {
   beforeEach(() => {
     inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
-    inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryDeveloperTechnologiesRepository =
       new InMemoryDeveloperTechnologiesRepository(
         inMemoryTechnologiesRepository,
       )
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
 
     inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
       inMemoryUsersRepository,
