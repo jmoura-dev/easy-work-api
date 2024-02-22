@@ -15,10 +15,10 @@ model User {
   password String
   about    String?
 
-  company      Company?
-  developer    Developer?
+  company   Company?
+  developer Developer?
 
-  avatar Avatar? @relation(fields: [avatarId], references: [id])
+  avatar Avatar? @relation(fields: [avatarId], references: [id], onDelete: Cascade)
 
   @@map("users")
 }
@@ -29,7 +29,7 @@ model Developer {
   occupation_area        String
   available_for_contract Boolean?              @default(false)
   price_per_hour         Decimal?              @db.Decimal(6, 2)
-  user                   User                  @relation(fields: [userId], references: [id])
+  user                   User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   candidature            Candidature[]
   developerTechnology    DeveloperTechnology[]
   notification           Notification[]
@@ -43,7 +43,7 @@ model Company {
   state    String?
   site_url String?
 
-  user User  @relation(fields: [userId], references: [id])
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   job  Job[]
 
   @@map("companies")
@@ -66,7 +66,7 @@ model Job {
   slug        String   @unique
   createdAt   DateTime @default(now()) @map("created_at")
 
-  company     Company       @relation(fields: [companyId], references: [id])
+  company     Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
   candidature Candidature[]
 
   @@map("jobs")
@@ -80,8 +80,8 @@ model Candidature {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
 
-  developer Developer @relation(fields: [developerId], references: [id])
-  job       Job       @relation(fields: [jobId], references: [id])
+  developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  job       Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@map("candidatures")
 }
@@ -99,8 +99,8 @@ model DeveloperTechnology {
   developerId  String @map("developer_id")
   technologyId String @map("technology_id")
 
-  developer  Developer  @relation(fields: [developerId], references: [id])
-  technology Technology @relation(fields: [technologyId], references: [id])
+  developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
 
   @@map("developerTechnologies")
 }
@@ -113,7 +113,7 @@ model Notification {
   readAt      DateTime? @map("read_at")
   createdAt   DateTime  @default(now()) @map("created_at")
 
-  recipient Developer @relation(fields: [recipientId], references: [id])
+  recipient Developer @relation(fields: [recipientId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
