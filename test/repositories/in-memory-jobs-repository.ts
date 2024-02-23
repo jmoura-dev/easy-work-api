@@ -29,6 +29,12 @@ export class InMemoryJobsRepository implements JobsRepository {
     return job
   }
 
+  async findMany({ page }: PaginationParams): Promise<Job[]> {
+    const jobs = this.items.slice((page - 1) * 20, page * 20)
+
+    return jobs
+  }
+
   async findManyByCompanyId(
     { page }: PaginationParams,
     companyId: string,
