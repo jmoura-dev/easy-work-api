@@ -4,6 +4,8 @@ import { Job } from '@/domain/easy-work/enterprise/entities/job'
 import { PrismaJobMapper } from '../mappers/prisma-job-mapper'
 import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
+import { JobWithCompany } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-company'
+import { PrismaJobWithCompanyMapper } from '../mappers/prisma-job-with-company-mapper'
 
 @Injectable()
 export class PrismaJobsRepository implements JobsRepository {
@@ -43,6 +45,25 @@ export class PrismaJobsRepository implements JobsRepository {
     }
 
     return PrismaJobMapper.toDomain(job)
+  }
+
+  async findMany({ page }: PaginationParams): Promise<JobWithCompany[]> {
+    const jobs = await this.prisma.job.findMany({
+      skip: (page - 1) * 20,
+      take: 20,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        company: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    })
+
+    return jobs.map((job) => PrismaJobWithCompanyMapper.toDomain(job))
   }
 
   async findManyByCompanyId(

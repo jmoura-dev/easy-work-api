@@ -21,7 +21,7 @@ describe('Get all jobs', () => {
       page: 1,
     })
 
-    expect(result.jobs.length).toEqual(10)
+    expect(result.jobsWithCompany.length).toEqual(10)
   })
 
   it('should be able to get list with all jobs by number page', async () => {
@@ -34,7 +34,6 @@ describe('Get all jobs', () => {
       page: 2,
     })
 
-    expect(result.jobs.length).toEqual(2)
-    console.log(result.jobs)
+    expect(result.jobsWithCompany.length).toEqual(2)
   })
 })

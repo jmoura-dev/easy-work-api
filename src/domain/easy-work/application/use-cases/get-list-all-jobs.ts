@@ -1,13 +1,13 @@
 import { JobsRepository } from '../repositories/jobs-repository'
-import { Job } from '../../enterprise/entities/job'
 import { Injectable } from '@nestjs/common'
+import { JobWithCompany } from '../../enterprise/entities/value-objects/job-with-company'
 
 interface GetAllJobsUseCaseRequest {
   page: number
 }
 
 interface GetAllJobsUseCaseResponse {
-  jobs: Job[]
+  jobsWithCompany: JobWithCompany[]
 }
 
 @Injectable()
@@ -17,10 +17,10 @@ export class GetAllJobsUseCase {
   async execute({
     page,
   }: GetAllJobsUseCaseRequest): Promise<GetAllJobsUseCaseResponse> {
-    const jobs = await this.jobsRepository.findMany({ page })
+    const jobsWithCompany = await this.jobsRepository.findMany({ page })
 
     return {
-      jobs,
+      jobsWithCompany,
     }
   }
 }

@@ -99,7 +99,7 @@ describe('Get Developers By Filters(E2E)', () => {
       developersWithTechs: [
         expect.objectContaining({
           developerId: developer01.id.toString(),
-          userName: 'Jackson Moura',
+          userName: 'jackson moura',
           occupation_area: 'FullStack',
           techs: [
             expect.objectContaining({

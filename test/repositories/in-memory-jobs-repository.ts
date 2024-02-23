@@ -1,6 +1,7 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { JobsRepository } from '@/domain/easy-work/application/repositories/jobs-repository'
 import { Job } from '@/domain/easy-work/enterprise/entities/job'
+import { JobWithCompany } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-company'
 
 export class InMemoryJobsRepository implements JobsRepository {
   public items: Job[] = []
@@ -29,8 +30,18 @@ export class InMemoryJobsRepository implements JobsRepository {
     return job
   }
 
-  async findMany({ page }: PaginationParams): Promise<Job[]> {
-    const jobs = this.items.slice((page - 1) * 20, page * 20)
+  async findMany({ page }: PaginationParams): Promise<JobWithCompany[]> {
+    const jobsWithCompanies = this.items.map((job) => {
+      return JobWithCompany.create({
+        jobId: job.id,
+        companyName: 'random company',
+        title: job.title,
+        description: job.description,
+        created_at: job.created_at,
+      })
+    })
+
+    const jobs = jobsWithCompanies.slice((page - 1) * 20, page * 20)
 
     return jobs
   }

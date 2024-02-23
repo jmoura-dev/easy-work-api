@@ -44,6 +44,8 @@ import { ReadNotificationController } from './controllers/read-notification.cont
 import { ReadNotificationUseCase } from '@/domain/notification/application/use-cases/read-notification'
 import { GetDevelopersByQueriesController } from './controllers/get-developers-by-filters.controller'
 import { GetAllDevelopersUseCase } from '@/domain/easy-work/application/use-cases/get-all-developers'
+import { GetListAllJobsController } from './controllers/get-list-all-jobs.controller'
+import { GetAllJobsUseCase } from '@/domain/easy-work/application/use-cases/get-list-all-jobs'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -69,6 +71,7 @@ import { GetAllDevelopersUseCase } from '@/domain/easy-work/application/use-case
     EditUserController,
     ReadNotificationController,
     GetDevelopersByQueriesController,
+    GetListAllJobsController,
   ],
   providers: [
     CreateUserUseCase,
@@ -92,6 +95,7 @@ import { GetAllDevelopersUseCase } from '@/domain/easy-work/application/use-case
     EditUserDataUseCase,
     ReadNotificationUseCase,
     GetAllDevelopersUseCase,
+    GetAllJobsUseCase,
   ],
 })
 export class HttpModule {}
