@@ -10,6 +10,10 @@ export function makeJob(override: Partial<JobProps> = {}, id?: UniqueEntityID) {
     {
       title: faker.lorem.sentence(1),
       description: faker.lorem.text(),
+      workMode: faker.lorem.sentence(1),
+      workSchedule: faker.lorem.sentence(1),
+      hoursPerWeek: faker.number.int(2),
+      remuneration: faker.number.int(4),
       companyId: new UniqueEntityID(),
       ...override,
     },

@@ -52,9 +52,13 @@ export class AuthenticateUserController {
     const { user } = result.value
 
     const userWithRole = UserWithRolePresenter.toHttp(user)
+    const role = userWithRole.developerId ? 'developer' : 'company'
 
     return {
-      user: userWithRole,
+      user: {
+        ...userWithRole,
+        role,
+      },
       access_token: accessToken,
     }
   }

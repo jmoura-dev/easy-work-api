@@ -31,6 +31,10 @@ describe('Create job Use case', () => {
       userId: user.id.toString(),
       title: 'new job title',
       description: 'new job description',
+      workMode: 'remoto',
+      workSchedule: 'tempo integral',
+      remuneration: 1500,
+      hoursPerWeek: 40,
     })
 
     expect(result.isRight()).toBe(true)
@@ -49,6 +53,10 @@ describe('Create job Use case', () => {
       userId: 'Invalid-company-id',
       title: 'new job',
       description: 'new job description',
+      workMode: 'remoto',
+      workSchedule: 'tempo integral',
+      remuneration: 1500,
+      hoursPerWeek: 40,
     })
 
     expect(result.isLeft()).toBe(true)

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "jobs" ALTER COLUMN "hoursPerWeek" DROP NOT NULL,
+ALTER COLUMN "remuneration" DROP NOT NULL,
+ALTER COLUMN "workMode" DROP NOT NULL,
+ALTER COLUMN "workSchedule" DROP NOT NULL;

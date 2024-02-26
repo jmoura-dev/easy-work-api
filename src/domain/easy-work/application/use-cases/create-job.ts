@@ -9,6 +9,10 @@ interface CreateJobUseCaseRequest {
   userId: string
   title: string
   description: string
+  workMode: string
+  workSchedule: string
+  remuneration: number
+  hoursPerWeek: number
 }
 
 type CreateJobUseCaseResponse = Either<NotAllowedError, null>
@@ -24,6 +28,10 @@ export class CreateJobUseCase {
     userId,
     title,
     description,
+    workMode,
+    workSchedule,
+    remuneration,
+    hoursPerWeek,
   }: CreateJobUseCaseRequest): Promise<CreateJobUseCaseResponse> {
     const company = await this.companiesRepository.findByUserId(userId)
 
@@ -35,6 +43,10 @@ export class CreateJobUseCase {
       companyId: company.id,
       title,
       description,
+      workMode,
+      workSchedule,
+      remuneration,
+      hoursPerWeek,
     })
 
     await this.jobsRepository.create(job)

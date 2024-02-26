@@ -6,6 +6,10 @@ export interface JobWithCompanyProps {
   companyName: string
   title: string
   description: string
+  workMode: string
+  workSchedule: string
+  remuneration: number
+  hoursPerWeek: number
   created_at: Date
 }
 
@@ -24,6 +28,22 @@ export class JobWithCompany extends ValueObject<JobWithCompanyProps> {
 
   get description() {
     return this.props.description
+  }
+
+  get workMode() {
+    return this.props.workMode
+  }
+
+  get workSchedule() {
+    return this.props.workSchedule
+  }
+
+  get remuneration() {
+    return this.props.remuneration
+  }
+
+  get hoursPerWeek() {
+    return this.props.hoursPerWeek
   }
 
   get created_at() {

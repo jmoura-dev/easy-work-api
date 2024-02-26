@@ -33,20 +33,6 @@ export class PrismaJobsRepository implements JobsRepository {
     return PrismaJobMapper.toDomain(job)
   }
 
-  async findBySlug(slug: string): Promise<Job | null> {
-    const job = await this.prisma.job.findUnique({
-      where: {
-        slug,
-      },
-    })
-
-    if (!job) {
-      return null
-    }
-
-    return PrismaJobMapper.toDomain(job)
-  }
-
   async findMany({ page }: PaginationParams): Promise<JobWithCompany[]> {
     const jobs = await this.prisma.job.findMany({
       skip: (page - 1) * 20,

@@ -9,6 +9,10 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 const createBodySchema = z.object({
   title: z.string(),
   description: z.string(),
+  workMode: z.string(),
+  workSchedule: z.string(),
+  remuneration: z.number(),
+  hoursPerWeek: z.number(),
 })
 
 const zodValidationPipe = new ZodValidationPipe(createBodySchema)
@@ -25,12 +29,23 @@ export class CreateJobController {
     @Body(zodValidationPipe) body: CreateBodySchema,
   ) {
     const { sub: userId } = user
-    const { title, description } = body
+    const {
+      title,
+      description,
+      workMode,
+      workSchedule,
+      remuneration,
+      hoursPerWeek,
+    } = body
 
     const result = await this.createJob.execute({
       userId,
       title,
       description,
+      workMode,
+      workSchedule,
+      remuneration,
+      hoursPerWeek,
     })
 
     if (result.isLeft()) {

@@ -6,6 +6,10 @@ export class JobPresenter {
       id: job.id.toString(),
       title: job.title,
       description: job.description,
+      workMode: job.workMode,
+      workSchedule: job.workSchedule,
+      remuneration: job.remuneration,
+      hoursPerWeek: job.hoursPerWeek,
       created_at: job.created_at,
     }
   }

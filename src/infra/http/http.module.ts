@@ -33,8 +33,6 @@ import { GetJobDetailsByIdController } from './controllers/get-job-details-by-id
 import { GetJobDetailsByIdUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-id'
 import { FetchCandidaturesByDeveloperController } from './controllers/fetch-candidatures-by-developer.controller'
 import { FetchCandidaturesByDeveloperUseCase } from '@/domain/easy-work/application/use-cases/fetch-candidatures-by-developer'
-import { GetDetailsBySlugController } from './controllers/get-details-by-slug.controller'
-import { GetJobDetailsBySlugUseCase } from '@/domain/easy-work/application/use-cases/get-job-details-by-slug'
 import { UploadAvatarController } from './controllers/upload-avatar.controller'
 import { UploadAndCreateAvatarUseCase } from '@/domain/easy-work/application/use-cases/upload-and-create-avatar'
 import { StorageModule } from '../storage/storage.module'
@@ -66,7 +64,6 @@ import { GetAllJobsUseCase } from '@/domain/easy-work/application/use-cases/get-
     FetchListCandidaturesByJobController,
     GetJobDetailsByIdController,
     FetchCandidaturesByDeveloperController,
-    GetDetailsBySlugController,
     UploadAvatarController,
     EditUserController,
     ReadNotificationController,
@@ -90,7 +87,6 @@ import { GetAllJobsUseCase } from '@/domain/easy-work/application/use-cases/get-
     FetchListCandidaturesByJobUseCase,
     GetJobDetailsByIdUseCase,
     FetchCandidaturesByDeveloperUseCase,
-    GetJobDetailsBySlugUseCase,
     UploadAndCreateAvatarUseCase,
     EditUserDataUseCase,
     ReadNotificationUseCase,

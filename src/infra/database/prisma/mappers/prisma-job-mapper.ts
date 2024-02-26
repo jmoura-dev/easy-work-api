@@ -1,6 +1,5 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Job } from '@/domain/easy-work/enterprise/entities/job'
-import { Slug } from '@/domain/easy-work/enterprise/entities/value-objects/slug'
 import { Prisma, Job as PrismaJob } from '@prisma/client'
 
 export class PrismaJobMapper {
@@ -10,7 +9,10 @@ export class PrismaJobMapper {
         companyId: new UniqueEntityID(raw.companyId),
         title: raw.title,
         description: raw.description,
-        slug: Slug.create(raw.slug),
+        workMode: raw.workMode,
+        workSchedule: raw.workSchedule,
+        remuneration: raw.remuneration,
+        hoursPerWeek: raw.hoursPerWeek,
         created_at: raw.createdAt,
       },
       new UniqueEntityID(raw.id),
@@ -23,7 +25,10 @@ export class PrismaJobMapper {
       companyId: job.companyId.toString(),
       title: job.title,
       description: job.description,
-      slug: job.slug.value,
+      workMode: job.workMode,
+      workSchedule: job.workSchedule,
+      remuneration: job.remuneration,
+      hoursPerWeek: job.hoursPerWeek,
       createdAt: job.created_at,
     }
   }

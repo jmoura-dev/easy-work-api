@@ -15,6 +15,10 @@ export class PrismaJobWithCompanyMapper {
       companyName: raw.company.user.name,
       title: raw.title,
       description: raw.description,
+      workMode: raw.workMode,
+      workSchedule: raw.workSchedule,
+      remuneration: raw.remuneration,
+      hoursPerWeek: raw.hoursPerWeek,
       created_at: raw.createdAt,
     })
   }

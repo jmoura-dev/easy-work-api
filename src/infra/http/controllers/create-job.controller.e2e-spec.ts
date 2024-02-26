@@ -43,6 +43,10 @@ describe('Create Job Controller(E2E)', () => {
         userId: user.id.toString(),
         title: 'new job',
         description: 'new job description',
+        workMode: 'remoto',
+        workSchedule: 'tempo integral',
+        remuneration: 1500,
+        hoursPerWeek: 40,
       })
 
     expect(response.statusCode).toEqual(201)

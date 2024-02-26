@@ -7,6 +7,10 @@ export class JobWithCompanyPresenter {
       companyName: jobWithCompany.companyName,
       title: jobWithCompany.title.toLowerCase(),
       description: jobWithCompany.description,
+      workMode: jobWithCompany.workMode,
+      workSchedule: jobWithCompany.workSchedule,
+      remuneration: jobWithCompany.remuneration,
+      hoursPerWeek: jobWithCompany.hoursPerWeek,
       created_at: jobWithCompany.created_at,
     }
   }
