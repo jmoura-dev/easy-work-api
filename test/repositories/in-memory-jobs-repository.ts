@@ -20,22 +20,16 @@ export class InMemoryJobsRepository implements JobsRepository {
     return job
   }
 
-  async findBySlug(slug: string): Promise<Job | null> {
-    const job = this.items.find((item) => item.slug.value === slug)
-
-    if (!job) {
-      return null
-    }
-
-    return job
-  }
-
   async findMany({ page }: PaginationParams): Promise<JobWithCompany[]> {
     const jobsWithCompanies = this.items.map((job) => {
       return JobWithCompany.create({
         jobId: job.id,
         companyName: 'random company',
         title: job.title,
+        workMode: job.workMode,
+        workSchedule: job.workSchedule,
+        remuneration: job.remuneration,
+        hoursPerWeek: job.hoursPerWeek,
         description: job.description,
         created_at: job.created_at,
       })

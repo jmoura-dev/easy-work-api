@@ -67,6 +67,7 @@ model Job {
   workSchedule String
   remuneration Int
   hoursPerWeek Int
+  social_media String[]
   createdAt    DateTime @default(now()) @map("created_at")
 
   company     Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)

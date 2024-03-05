@@ -1,5 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Candidature } from '../../enterprise/entities/candidature'
+import { CandidatureWithJobAndCompany } from '../../enterprise/entities/value-objects/candidature-with-job-and-company'
 
 export abstract class CandidaturesRepository {
   abstract create(candidature: Candidature): Promise<void>
@@ -12,7 +13,7 @@ export abstract class CandidaturesRepository {
   abstract findManyByDeveloperId(
     param: PaginationParams,
     developerId: string,
-  ): Promise<Candidature[]>
+  ): Promise<CandidatureWithJobAndCompany[]>
 
   abstract save(candidature: Candidature): Promise<void>
 }

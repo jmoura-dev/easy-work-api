@@ -2,6 +2,7 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { CandidaturesRepository } from '@/domain/easy-work/application/repositories/candidatures-repository'
 import { Candidature } from '@/domain/easy-work/enterprise/entities/candidature'
+import { CandidatureWithJobAndCompany } from '@/domain/easy-work/enterprise/entities/value-objects/candidature-with-job-and-company'
 
 export class InMemoryCandidaturesRepository implements CandidaturesRepository {
   public items: Candidature[] = []
@@ -34,12 +35,23 @@ export class InMemoryCandidaturesRepository implements CandidaturesRepository {
   async findManyByDeveloperId(
     { page }: PaginationParams,
     developerId: string,
-  ): Promise<Candidature[]> {
+  ): Promise<CandidatureWithJobAndCompany[]> {
     const candidatures = this.items
       .filter((item) => item.developerId.toString() === developerId)
       .slice((page - 1) * 20, page * 20)
 
-    return candidatures
+    const candidaturesData = candidatures.map((item) => {
+      return CandidatureWithJobAndCompany.create({
+        candidatureId: item.id,
+        jobTitle: 'New job',
+        companyName: 'CompanyName',
+        status: item.status,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt ? item.updatedAt : null,
+      })
+    })
+
+    return candidaturesData
   }
 
   async save(candidature: Candidature): Promise<void> {

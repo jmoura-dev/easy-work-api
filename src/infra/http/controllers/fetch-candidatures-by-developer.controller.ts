@@ -11,7 +11,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { CandidaturePresenter } from '../presenters/candidature-presenter'
+import { CandidatureWithJobAndCompanyPresenter } from '../presenters/candidature-with-job-and-company'
 
 const pageQueryParamSchema = z
   .string()
@@ -56,7 +56,7 @@ export class FetchCandidaturesByDeveloperController {
     const candidaturesArray = result.value.candidatures
 
     const candidatures = candidaturesArray.map((candidature) =>
-      CandidaturePresenter.toHttp(candidature),
+      CandidatureWithJobAndCompanyPresenter.toHttp(candidature),
     )
 
     return {

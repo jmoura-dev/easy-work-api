@@ -5,6 +5,8 @@ import { PrismaCandidatureMapper } from '../mappers/prisma-candidature-mapper'
 import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
 import { DomainEvents } from '@/core/events/domain-events'
+import { CandidatureWithJobAndCompany } from '@/domain/easy-work/enterprise/entities/value-objects/candidature-with-job-and-company'
+import { PrismaCandidatureWithJobAndCompanyMapper } from '../mappers/prisma-candidature-with-job-and-company-mapper'
 
 @Injectable()
 export class PrismaCandidaturesRepository implements CandidaturesRepository {
@@ -55,7 +57,7 @@ export class PrismaCandidaturesRepository implements CandidaturesRepository {
   async findManyByDeveloperId(
     { page }: PaginationParams,
     developerId: string,
-  ): Promise<Candidature[]> {
+  ): Promise<CandidatureWithJobAndCompany[]> {
     const candidatures = await this.prisma.candidature.findMany({
       where: {
         developerId,
@@ -64,14 +66,22 @@ export class PrismaCandidaturesRepository implements CandidaturesRepository {
         createdAt: 'desc',
       },
       include: {
-        job: true,
+        job: {
+          include: {
+            company: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
       },
       skip: (page - 1) * 20,
       take: 20,
     })
 
     return candidatures.map((candidature) =>
-      PrismaCandidatureMapper.toDomain(candidature),
+      PrismaCandidatureWithJobAndCompanyMapper.toDomain(candidature),
     )
   }
 

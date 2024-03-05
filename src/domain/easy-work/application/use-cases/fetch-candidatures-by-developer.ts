@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { Candidature } from '../../enterprise/entities/candidature'
 import { DevelopersRepository } from '../repositories/developers-repository'
 import { CandidaturesRepository } from '../repositories/candidatures-repository'
 import { Injectable } from '@nestjs/common'
+import { CandidatureWithJobAndCompany } from '../../enterprise/entities/value-objects/candidature-with-job-and-company'
 
 interface FetchCandidaturesByDeveloperUseCaseRequest {
   userId: string
@@ -13,7 +13,7 @@ interface FetchCandidaturesByDeveloperUseCaseRequest {
 type FetchCandidaturesByDeveloperUseCaseResponse = Either<
   ResourceNotFoundError,
   {
-    candidatures: Candidature[]
+    candidatures: CandidatureWithJobAndCompany[]
   }
 >
 
