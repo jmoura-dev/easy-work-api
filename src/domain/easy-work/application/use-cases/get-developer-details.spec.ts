@@ -56,8 +56,6 @@ describe('Get developer details by id', () => {
 
     expect(result.isRight()).toBe(true)
 
-    console.log(result.value)
-
     expect(result.value).toEqual({
       developerWithDetails: expect.objectContaining({
         userName: 'Jackson Moura',

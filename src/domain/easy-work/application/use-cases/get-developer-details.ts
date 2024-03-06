@@ -3,6 +3,7 @@ import { UsersRepository } from '../repositories/users-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { DeveloperWithTechnologies } from '../../enterprise/entities/value-objects/developer-with-technologies'
 import { DevelopersRepository } from '../repositories/developers-repository'
+import { Injectable } from '@nestjs/common'
 
 interface GetDeveloperDetailsUseCaseRequest {
   userId: string
@@ -15,6 +16,7 @@ type GetDeveloperDetailsUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class GetDeveloperDetailsUseCase {
   constructor(
     private usersRepository: UsersRepository,
