@@ -6,6 +6,7 @@ import { DevelopersRepository } from '../repositories/developers-repository'
 import { Candidature } from '../../enterprise/entities/candidature'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Injectable } from '@nestjs/common'
+import { CandidatureAlreadyExists } from './errors/candidature-already-exists-error'
 
 interface CreateCandidatureUseCaseRequest {
   userId: string
@@ -38,6 +39,17 @@ export class CreateCandidatureUseCase {
 
     if (!job) {
       return left(new ResourceNotFoundError())
+    }
+
+    const candidaturesWithSameDeveloperId =
+      await this.candidaturesRepository.findMany(developer.id.toString())
+
+    const candidatureAlreadyExists = candidaturesWithSameDeveloperId.find(
+      (item) => item.jobId.equals(job.id),
+    )
+
+    if (candidatureAlreadyExists) {
+      return left(new CandidatureAlreadyExists())
     }
 
     const candidature = Candidature.create({

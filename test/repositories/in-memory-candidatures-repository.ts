@@ -54,6 +54,14 @@ export class InMemoryCandidaturesRepository implements CandidaturesRepository {
     return candidaturesData
   }
 
+  async findMany(developerId: string): Promise<Candidature[]> {
+    const candidatures = this.items.filter(
+      (item) => item.developerId.toString() === developerId,
+    )
+
+    return candidatures
+  }
+
   async save(candidature: Candidature): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === candidature.id)
 

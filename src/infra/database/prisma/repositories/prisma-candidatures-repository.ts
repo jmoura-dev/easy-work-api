@@ -85,6 +85,20 @@ export class PrismaCandidaturesRepository implements CandidaturesRepository {
     )
   }
 
+  async findMany(developerId: string): Promise<Candidature[]> {
+    const candidatures = await this.prisma.candidature.findMany({
+      where: {
+        developerId,
+      },
+    })
+
+    const candidaturesToDomain = candidatures.map((candidature) =>
+      PrismaCandidatureMapper.toDomain(candidature),
+    )
+
+    return candidaturesToDomain
+  }
+
   async save(candidature: Candidature): Promise<void> {
     const data = PrismaCandidatureMapper.toPrisma(candidature)
 

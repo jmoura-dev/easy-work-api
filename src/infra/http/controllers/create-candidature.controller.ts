@@ -1,10 +1,17 @@
 import { CreateCandidatureUseCase } from '@/domain/easy-work/application/use-cases/create-candidature'
-import { Body, Controller, NotFoundException, Post } from '@nestjs/common'
+import {
+  Body,
+  ConflictException,
+  Controller,
+  NotFoundException,
+  Post,
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { CandidatureAlreadyExists } from '@/domain/easy-work/application/use-cases/errors/candidature-already-exists-error'
 
 const createBodySchema = z.object({
   jobId: z.string().uuid(),
@@ -38,6 +45,21 @@ export class CreateCandidatureController {
 
       if (error instanceof ResourceNotFoundError) {
         throw new NotFoundException()
+      }
+    }
+
+    if (result.isLeft()) {
+      const error = result.value
+
+      switch (error.constructor) {
+        case ResourceNotFoundError:
+          throw new NotFoundException()
+        case CandidatureAlreadyExists:
+          throw new ConflictException({
+            message: 'Você já se candidatou para esta vaga!',
+          })
+        default:
+          throw new NotFoundException(error.message)
       }
     }
   }

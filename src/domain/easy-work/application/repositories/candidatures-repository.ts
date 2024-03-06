@@ -15,5 +15,6 @@ export abstract class CandidaturesRepository {
     developerId: string,
   ): Promise<CandidatureWithJobAndCompany[]>
 
+  abstract findMany(developerId: string): Promise<Candidature[]>
   abstract save(candidature: Candidature): Promise<void>
 }
