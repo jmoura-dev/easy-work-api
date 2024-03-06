@@ -104,6 +104,28 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     )
   }
 
+  async findDetailsById(id: string): Promise<DeveloperWithTechnologies | null> {
+    const developerWithDetails = await this.prisma.developer.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+        developerTechnology: {
+          include: {
+            technology: true,
+          },
+        },
+      },
+    })
+
+    if (!developerWithDetails) {
+      return null
+    }
+
+    return PrismaDeveloperWithTechnologiesMapper.toDomain(developerWithDetails)
+  }
+
   async save(developer: Developer): Promise<void> {
     const data = PrismaDeveloperMapper.toPrisma(developer)
 

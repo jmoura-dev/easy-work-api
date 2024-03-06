@@ -19,5 +19,9 @@ export abstract class DevelopersRepository {
     page,
   }: FindManyProps): Promise<DeveloperWithTechnologies[]>
 
+  abstract findDetailsById(
+    id: string,
+  ): Promise<DeveloperWithTechnologies | null>
+
   abstract save(developer: Developer): Promise<void>
 }

@@ -125,6 +125,34 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
     return developers
   }
 
+  async findDetailsById(id: string): Promise<DeveloperWithTechnologies | null> {
+    const developer = this.items.find((item) => item.id.toString() === id)
+
+    if (!developer) {
+      return null
+    }
+
+    const user = await this.inMemoryUsersRepository.findById(
+      developer.userId.toString(),
+    )
+
+    if (!user) {
+      return null
+    }
+
+    const developerWithDetails = DeveloperWithTechnologies.create({
+      developerId: developer.id,
+      userName: user.name,
+      about: user.about,
+      available_for_contract: developer.available_for_contract,
+      occupation_area: developer.occupation_area,
+      price_per_hour: developer.price_per_hour,
+      techs: [],
+    })
+
+    return developerWithDetails
+  }
+
   async save(developer: Developer): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === developer.id)
 
