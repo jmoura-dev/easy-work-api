@@ -4,6 +4,7 @@ import { Technology } from '@/domain/easy-work/enterprise/entities/technology'
 
 export interface DeveloperWithTechnologiesProps {
   developerId: UniqueEntityID
+  avatarUrl: string | null
   occupation_area: string
   price_per_hour: number | null
   available_for_contract: boolean
@@ -15,6 +16,10 @@ export interface DeveloperWithTechnologiesProps {
 export class DeveloperWithTechnologies extends ValueObject<DeveloperWithTechnologiesProps> {
   get developerId() {
     return this.props.developerId
+  }
+
+  get avatarUrl() {
+    return this.props.avatarUrl
   }
 
   get occupation_area() {

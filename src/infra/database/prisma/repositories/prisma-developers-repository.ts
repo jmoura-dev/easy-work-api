@@ -73,7 +73,11 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     const developersNoFilterByTech = await this.prisma.developer.findMany({
       where: initialWhere,
       include: {
-        user: true,
+        user: {
+          include: {
+            avatar: true,
+          },
+        },
         developerTechnology: {
           include: {
             technology: true,
@@ -110,7 +114,11 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
         id,
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            avatar: true,
+          },
+        },
         developerTechnology: {
           include: {
             technology: true,
