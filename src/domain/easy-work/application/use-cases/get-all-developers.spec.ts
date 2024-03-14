@@ -51,7 +51,7 @@ describe('Get all developers Use Case', () => {
     }
 
     const result = await sut.execute({
-      techs: [],
+      techs: '',
       page: 2,
     })
 
@@ -97,7 +97,7 @@ describe('Get all developers Use Case', () => {
 
     const result = await sut.execute({
       occupation_area: 'FullStack',
-      techs: ['Docker', 'Typescript'],
+      techs: 'Docker,Typescript',
       page: 1,
     })
 

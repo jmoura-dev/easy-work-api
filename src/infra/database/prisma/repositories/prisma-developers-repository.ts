@@ -58,15 +58,15 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
   }: FindManyProps): Promise<DeveloperWithTechnologies[]> {
     const initialWhere: Prisma.DeveloperWhereInput = {}
 
-    if (name) {
+    if (name && name !== '') {
       initialWhere.user = {
         name: {
-          contains: name,
+          contains: name.toLowerCase(),
         },
       }
     }
 
-    if (occupation_area) {
+    if (occupation_area && occupation_area !== '') {
       initialWhere.occupation_area = occupation_area
     }
 

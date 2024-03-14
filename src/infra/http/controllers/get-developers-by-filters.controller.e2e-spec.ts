@@ -86,12 +86,14 @@ describe('Get Developers By Filters(E2E)', () => {
       technologyId: technology02.id,
     })
 
+    const techsParam = 'Docker,Typescript'
+    const occupationAreaParam = 'FullStack'
+
     const response = await request(app.getHttpServer())
-      .get(`/developers/list`)
-      .send({
-        occupation_area: 'FullStack',
-        techs: ['Docker', 'Typescript'],
-      })
+      .get(
+        `/developers/list?occupation_area=${occupationAreaParam}&techs=${techsParam}`,
+      )
+      .send()
 
     expect(response.statusCode).toEqual(200)
 

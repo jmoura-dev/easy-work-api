@@ -5,7 +5,7 @@ import { DeveloperWithTechnologies } from '../../enterprise/entities/value-objec
 interface GetAllDevelopersUseCaseRequest {
   name?: string
   occupation_area?: string
-  techs: string[]
+  techs: string
   page: number
 }
 
@@ -23,11 +23,18 @@ export class GetAllDevelopersUseCase {
     techs,
     page,
   }: GetAllDevelopersUseCaseRequest): Promise<GetAllDevelopersUseCaseResponse> {
+    const techsStringToArray = (techsString: string): string[] => {
+      if (!techsString) return []
+      return techsString.trim().split(',')
+    }
+
+    const techsArray = techsStringToArray(techs)
+
     const developers = await this.developersRepository.findManyWithTechnologies(
       {
         name,
         occupation_area,
-        techs,
+        techs: techsArray,
         page,
       },
     )

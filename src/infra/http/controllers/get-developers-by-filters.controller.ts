@@ -1,28 +1,25 @@
 import { GetAllDevelopersUseCase } from '@/domain/easy-work/application/use-cases/get-all-developers'
-import { Body, Controller, Get, Query } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { DeveloperWithTechnologiesPresenter } from '../presenters/developer-with-technologies-presenter'
 import { Public } from '@/infra/auth/public'
 
-const pageQueryParamSchema = z
-  .string()
-  .optional()
-  .default('1')
-  .transform(Number)
-  .pipe(z.number().min(1))
-
-const createBodySchema = z.object({
+const createQuerySchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .default('1')
+    .transform(Number)
+    .pipe(z.number().min(1)),
   name: z.string().optional(),
   occupation_area: z.string().optional(),
-  techs: z.array(z.string()).optional().default([]),
+  techs: z.string().optional().default(''),
 })
 
-const pageZodQueryParamPipe = new ZodValidationPipe(pageQueryParamSchema)
-const createZodBodyPipe = new ZodValidationPipe(createBodySchema)
+const createQuerySchemaPipe = new ZodValidationPipe(createQuerySchema)
 
-type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
-type PageRequestBodySchema = z.infer<typeof createBodySchema>
+type CreateQuerySchema = z.infer<typeof createQuerySchema>
 
 @Controller('/developers/list')
 @Public()
@@ -30,11 +27,8 @@ export class GetDevelopersByQueriesController {
   constructor(private getAllDevelopers: GetAllDevelopersUseCase) {}
 
   @Get()
-  async handle(
-    @Query('page', pageZodQueryParamPipe) page: PageQueryParamSchema,
-    @Body(createZodBodyPipe) body: PageRequestBodySchema,
-  ) {
-    const { name, occupation_area, techs } = body
+  async handle(@Query(createQuerySchemaPipe) query: CreateQuerySchema) {
+    const { page, name, occupation_area, techs } = query
 
     const result = await this.getAllDevelopers.execute({
       name,
