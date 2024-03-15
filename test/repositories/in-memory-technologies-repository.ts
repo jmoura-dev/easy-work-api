@@ -27,4 +27,10 @@ export class InMemoryTechnologiesRepository implements TechnologiesRepository {
 
     return technology
   }
+
+  async findMany(): Promise<Technology[]> {
+    const technologies = this.items
+
+    return technologies
+  }
 }

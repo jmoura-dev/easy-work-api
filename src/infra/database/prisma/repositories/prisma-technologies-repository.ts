@@ -43,4 +43,12 @@ export class PrismaTechnologiesRepository implements TechnologiesRepository {
 
     return PrismaTechnologyMapper.toDomain(technology)
   }
+
+  async findMany(): Promise<Technology[]> {
+    const technologies = await this.prisma.technology.findMany()
+
+    return technologies.map((technology) =>
+      PrismaTechnologyMapper.toDomain(technology),
+    )
+  }
 }

@@ -67,7 +67,7 @@ export class PrismaDevelopersRepository implements DevelopersRepository {
     }
 
     if (occupation_area && occupation_area !== '') {
-      initialWhere.occupation_area = occupation_area
+      initialWhere.occupation_area = occupation_area.toLowerCase()
     }
 
     const developersNoFilterByTech = await this.prisma.developer.findMany({
