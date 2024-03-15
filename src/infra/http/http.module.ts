@@ -46,6 +46,8 @@ import { GetListAllJobsController } from './controllers/get-list-all-jobs.contro
 import { GetAllJobsUseCase } from '@/domain/easy-work/application/use-cases/get-list-all-jobs'
 import { GetDeveloperDetailsUseCase } from '@/domain/easy-work/application/use-cases/get-developer-details'
 import { GetDeveloperDetailsController } from './controllers/get-developer-details.controller'
+import { GetAllTechnologiesController } from './controllers/get-all-technologies.controller'
+import { GetAllTechnologiesUseCase } from '@/domain/easy-work/application/use-cases/get-all-technologies'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -72,6 +74,7 @@ import { GetDeveloperDetailsController } from './controllers/get-developer-detai
     GetDevelopersByQueriesController,
     GetListAllJobsController,
     GetDeveloperDetailsController,
+    GetAllTechnologiesController,
   ],
   providers: [
     CreateUserUseCase,
@@ -96,6 +99,7 @@ import { GetDeveloperDetailsController } from './controllers/get-developer-detai
     GetAllDevelopersUseCase,
     GetAllJobsUseCase,
     GetDeveloperDetailsUseCase,
+    GetAllTechnologiesUseCase,
   ],
 })
 export class HttpModule {}
