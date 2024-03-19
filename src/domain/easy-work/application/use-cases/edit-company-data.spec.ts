@@ -17,18 +17,20 @@ describe('Edit company data Use case', () => {
     const user = makeUser()
     const company = makeCompany({
       userId: user.id,
-      cnpj: '12345678900012',
+      site_url: 'contrata.com',
     })
 
     inMemoryCompaniesRepository.items.push(company)
 
     const result = await sut.execute({
       userId: company.userId.toString(),
-      cnpj: '98765432100012',
+      site_url: 'javascript.com',
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryCompaniesRepository.items[0].cnpj).toEqual('98765432100012')
+    expect(inMemoryCompaniesRepository.items[0].site_url).toEqual(
+      'javascript.com',
+    )
   })
 
   it('should not be able to update company data with invalid id', async () => {

@@ -13,7 +13,6 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 const createBodySchema = z.object({
   userId: z.string().uuid(),
-  cnpj: z.string(),
   city: z.string().optional(),
   state: z.string().optional(),
   site_url: z.string().optional(),
@@ -30,11 +29,10 @@ export class CreateCompanyController {
   @Post()
   @Public()
   async create(@Body(zodValidationPipe) body: CreateBodySchema) {
-    const { userId, cnpj, city, state, site_url } = body
+    const { userId, city, state, site_url } = body
 
     const result = await this.createCompany.execute({
       userId,
-      cnpj,
       city,
       state,
       site_url,

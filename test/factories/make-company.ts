@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import {
   Company,
   CompanyProps,
@@ -15,7 +14,6 @@ export function makeCompany(
   const company = Company.create(
     {
       userId: new UniqueEntityID(),
-      cnpj: faker.string.numeric(14),
       ...override,
     },
     id,

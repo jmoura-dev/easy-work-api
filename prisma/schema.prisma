@@ -38,7 +38,6 @@ model Developer {
 model Company {
   id       String  @id @default(uuid())
   userId   String  @unique @map("user_id")
-  cnpj     String
   city     String?
   state    String?
   site_url String?

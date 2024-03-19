@@ -50,15 +50,15 @@ describe('Get Developers By Filters(E2E)', () => {
 
     const developer01 = await developerFactory.makePrismaDeveloper({
       userId: user01.id,
-      occupation_area: 'FullStack',
+      occupation_area: 'fullstack',
     })
     const developer02 = await developerFactory.makePrismaDeveloper({
       userId: user02.id,
-      occupation_area: 'FullStack',
+      occupation_area: 'fullstack',
     })
     const developer03 = await developerFactory.makePrismaDeveloper({
       userId: user03.id,
-      occupation_area: 'Frontend',
+      occupation_area: 'frontend',
     })
 
     const technology01 = await technologyFactory.makePrismaTechnology({
@@ -87,7 +87,7 @@ describe('Get Developers By Filters(E2E)', () => {
     })
 
     const techsParam = 'Docker,Typescript'
-    const occupationAreaParam = 'FullStack'
+    const occupationAreaParam = 'fullStack'
 
     const response = await request(app.getHttpServer())
       .get(
@@ -102,7 +102,7 @@ describe('Get Developers By Filters(E2E)', () => {
         expect.objectContaining({
           developerId: developer01.id.toString(),
           userName: 'jackson moura',
-          occupation_area: 'FullStack',
+          occupation_area: 'fullstack',
           techs: [
             expect.objectContaining({
               name: 'Docker',

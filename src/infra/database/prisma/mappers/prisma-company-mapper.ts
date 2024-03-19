@@ -7,7 +7,6 @@ export class PrismaCompanyMapper {
     return Company.create(
       {
         userId: new UniqueEntityID(raw.userId),
-        cnpj: raw.cnpj,
         city: raw.city,
         state: raw.state,
         site_url: raw.site_url,
@@ -20,7 +19,6 @@ export class PrismaCompanyMapper {
     return {
       id: company.id.toString(),
       userId: company.userId.toString(),
-      cnpj: company.cnpj,
       city: company.city,
       state: company.state,
       site_url: company.site_url,

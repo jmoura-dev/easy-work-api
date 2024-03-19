@@ -29,7 +29,6 @@ export class GetDevelopersByQueriesController {
   @Get()
   async handle(@Query(createQuerySchemaPipe) query: CreateQuerySchema) {
     const { page, name, occupation_area, techs } = query
-    console.log(page, name, occupation_area, techs)
 
     const result = await this.getAllDevelopers.execute({
       name,

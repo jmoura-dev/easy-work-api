@@ -8,7 +8,6 @@ import { Injectable } from '@nestjs/common'
 
 interface CreateCompanyUseCaseRequest {
   userId: string
-  cnpj: string
   city?: string
   state?: string
   site_url?: string
@@ -25,14 +24,12 @@ export class CreateCompanyUseCase {
 
   async execute({
     userId,
-    cnpj,
     city,
     state,
     site_url,
   }: CreateCompanyUseCaseRequest): Promise<CreateCompanyUseCaseResponse> {
     const company = Company.create({
       userId: new UniqueEntityID(userId),
-      cnpj,
       city,
       state,
       site_url,

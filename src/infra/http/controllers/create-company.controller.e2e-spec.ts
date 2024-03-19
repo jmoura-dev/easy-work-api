@@ -31,7 +31,7 @@ describe('Create Company Controller(E2E)', () => {
       .post('/companies')
       .send({
         userId: user.id.toString(),
-        cnpj: '12345678000145',
+        state: 'Alagoas',
       })
 
     expect(response.statusCode).toEqual(201)
@@ -43,6 +43,6 @@ describe('Create Company Controller(E2E)', () => {
     })
 
     expect(companyOnDatabase).toBeTruthy()
-    expect(companyOnDatabase?.cnpj).toEqual('12345678000145')
+    expect(companyOnDatabase?.state).toEqual('Alagoas')
   })
 })

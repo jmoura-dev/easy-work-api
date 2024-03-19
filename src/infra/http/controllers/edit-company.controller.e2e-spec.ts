@@ -36,7 +36,6 @@ describe('Edit Company Controller(E2E)', () => {
 
     const company = await companyFactory.makePrismaCompany({
       userId: user.id,
-      cnpj: '12345678900012',
       site_url: 'www.company.com',
     })
 
@@ -58,7 +57,6 @@ describe('Edit Company Controller(E2E)', () => {
 
     expect(companyOnDatabase).toBeTruthy()
     expect(companyOnDatabase).toMatchObject({
-      cnpj: '12345678900012',
       site_url: 'www.newCompany.com',
     })
   })

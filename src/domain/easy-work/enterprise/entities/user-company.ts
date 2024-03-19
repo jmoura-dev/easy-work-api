@@ -4,7 +4,6 @@ import { Entity } from '@/core/entities/entity'
 
 export interface CompanyProps {
   userId: UniqueEntityID
-  cnpj: string
   city: string | null
   state: string | null
   site_url: string | null
@@ -13,14 +12,6 @@ export interface CompanyProps {
 export class Company extends Entity<CompanyProps> {
   get userId() {
     return this.props.userId
-  }
-
-  get cnpj() {
-    return this.props.cnpj
-  }
-
-  set cnpj(cnpj: string) {
-    this.props.cnpj = cnpj
   }
 
   get city() {

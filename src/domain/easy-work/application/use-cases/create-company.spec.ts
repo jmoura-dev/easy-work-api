@@ -49,17 +49,17 @@ describe('Create company Use case', () => {
 
     const company = makeCompany({
       userId: user.id,
-      cnpj: '12.123.123/0001-12',
+      state: 'Alagoas',
     })
 
     const result = await sut.execute({
       userId: company.userId.toString(),
-      cnpj: company.cnpj,
+      state: company.state ?? undefined,
     })
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryCompaniesRepository.items[0]).toMatchObject({
-      cnpj: '12.123.123/0001-12',
+      state: 'Alagoas',
     })
   })
 
@@ -72,7 +72,6 @@ describe('Create company Use case', () => {
 
     const result = await sut.execute({
       userId: 'invalid-user',
-      cnpj: company.cnpj,
     })
 
     expect(result.isLeft()).toBe(true)
