@@ -48,6 +48,8 @@ import { GetDeveloperDetailsUseCase } from '@/domain/easy-work/application/use-c
 import { GetDeveloperDetailsController } from './controllers/get-developer-details.controller'
 import { GetAllTechnologiesController } from './controllers/get-all-technologies.controller'
 import { GetAllTechnologiesUseCase } from '@/domain/easy-work/application/use-cases/get-all-technologies'
+import { GetCompanyDetailsController } from './controllers/get-company-details.controller'
+import { GetCompanyDetailsUseCase } from '@/domain/easy-work/application/use-cases/get-company-details'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -75,6 +77,7 @@ import { GetAllTechnologiesUseCase } from '@/domain/easy-work/application/use-ca
     GetListAllJobsController,
     GetDeveloperDetailsController,
     GetAllTechnologiesController,
+    GetCompanyDetailsController,
   ],
   providers: [
     CreateUserUseCase,
@@ -100,6 +103,7 @@ import { GetAllTechnologiesUseCase } from '@/domain/easy-work/application/use-ca
     GetAllJobsUseCase,
     GetDeveloperDetailsUseCase,
     GetAllTechnologiesUseCase,
+    GetCompanyDetailsUseCase,
   ],
 })
 export class HttpModule {}

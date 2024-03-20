@@ -3,6 +3,7 @@ import { CompaniesRepository } from '../repositories/companies-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CompanyWithDetails } from '../../enterprise/entities/value-objects/company-with-details'
 import { UsersRepository } from '../repositories/users-repository'
+import { Injectable } from '@nestjs/common'
 
 interface GetCompanyDetailsUseCaseRequest {
   userId: string
@@ -15,6 +16,7 @@ type GetCompanyDetailsUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class GetCompanyDetailsUseCase {
   constructor(
     private usersRepository: UsersRepository,
