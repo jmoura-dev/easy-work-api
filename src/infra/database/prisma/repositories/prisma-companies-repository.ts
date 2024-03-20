@@ -3,6 +3,8 @@ import { Company } from '@/domain/easy-work/enterprise/entities/user-company'
 import { Injectable } from '@nestjs/common'
 import { PrismaCompanyMapper } from '../mappers/prisma-company-mapper'
 import { PrismaService } from '../prisma.service'
+import { CompanyWithDetails } from '@/domain/easy-work/enterprise/entities/value-objects/company-with-details'
+import { PrismaCompanyWithDetailsMapper } from '../mappers/prisma-company-with-details-mapper'
 
 @Injectable()
 export class PrismaCompaniesRepository implements CompaniesRepository {
@@ -53,5 +55,26 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
       },
       data,
     })
+  }
+
+  async findCompanyDetailsById(id: string): Promise<CompanyWithDetails | null> {
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: {
+          include: {
+            avatar: true,
+          },
+        },
+      },
+    })
+
+    if (!company) {
+      return null
+    }
+
+    return PrismaCompanyWithDetailsMapper.toDomain(company)
   }
 }

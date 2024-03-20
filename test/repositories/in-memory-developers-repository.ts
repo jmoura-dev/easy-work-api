@@ -113,6 +113,7 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
 
         return DeveloperWithTechnologies.create({
           developerId: developer.id,
+          avatarUrl: null,
           userName: user.name,
           about: user.about,
           occupation_area: developer.occupation_area,
@@ -142,6 +143,7 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
 
     const developerWithDetails = DeveloperWithTechnologies.create({
       developerId: developer.id,
+      avatarUrl: null,
       userName: user.name,
       about: user.about,
       available_for_contract: developer.available_for_contract,
