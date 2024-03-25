@@ -6,6 +6,8 @@ import { Injectable } from '@nestjs/common'
 
 interface EditCompanyDataUseCaseRequest {
   userId: string
+  state?: string
+  city?: string
   site_url?: string
 }
 
@@ -22,6 +24,8 @@ export class EditCompanyDataUseCase {
 
   async execute({
     userId,
+    state,
+    city,
     site_url,
   }: EditCompanyDataUseCaseRequest): Promise<EditCompanyDataUseCaseResponse> {
     const company = await this.companiesRepository.findByUserId(userId)
@@ -30,6 +34,8 @@ export class EditCompanyDataUseCase {
       return left(new ResourceNotFoundError())
     }
 
+    company.state = state ?? company.state
+    company.city = city ?? company.city
     company.site_url = site_url ?? company.site_url
 
     await this.companiesRepository.save(company)

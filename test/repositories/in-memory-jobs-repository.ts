@@ -1,6 +1,7 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { JobsRepository } from '@/domain/easy-work/application/repositories/jobs-repository'
 import { Job } from '@/domain/easy-work/enterprise/entities/job'
+import { JobWithCandidaturesAmount } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-candidatures-amount'
 import { JobWithCompany } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-company'
 
 export class InMemoryJobsRepository implements JobsRepository {
@@ -48,6 +49,29 @@ export class InMemoryJobsRepository implements JobsRepository {
       .filter((item) => item.companyId.toString() === companyId)
       .slice((page - 1) * 20, page * 20)
 
+    return jobs
+  }
+
+  async findManyWithCandidaturesAmount(
+    companyId: string,
+  ): Promise<JobWithCandidaturesAmount[]> {
+    const companyJobs = this.items.filter(
+      (item) => item.companyId.toString() === companyId,
+    )
+
+    const jobs = companyJobs.map((item) => {
+      return JobWithCandidaturesAmount.create({
+        jobId: item.id,
+        title: item.title,
+        description: item.description,
+        workMode: item.workMode,
+        workSchedule: item.workSchedule,
+        remuneration: item.remuneration,
+        hoursPerWeek: item.hoursPerWeek,
+        createdAt: item.created_at,
+        amountCandidatures: 3,
+      })
+    })
     return jobs
   }
 }

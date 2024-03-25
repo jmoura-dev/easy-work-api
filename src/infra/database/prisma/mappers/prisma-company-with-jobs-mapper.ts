@@ -25,7 +25,6 @@ export class PrismaCompanyWithJobsMapper {
       title: raw.job.title,
       description: raw.job.description,
       createdAt: raw.job.createdAt,
-      amountCandidatures: raw.job.candidatures.length,
     })
   }
 }

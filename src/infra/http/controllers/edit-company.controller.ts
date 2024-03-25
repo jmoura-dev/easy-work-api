@@ -14,6 +14,8 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 const editCompanyBodySchema = z.object({
+  state: z.string().optional(),
+  city: z.string().optional(),
   site_url: z.string().optional(),
 })
 
@@ -32,10 +34,12 @@ export class EditCompanyController {
     @Body(zodValidationPipe) body: EditCompanyBodySchema,
   ) {
     const { sub: userId } = user
-    const { site_url } = body
+    const { state, city, site_url } = body
 
     const result = await this.editCompanyData.execute({
       userId,
+      state,
+      city,
       site_url,
     })
 

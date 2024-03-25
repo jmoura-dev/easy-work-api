@@ -10,7 +10,6 @@ export interface CompanyWithJobsProps {
   title: string
   description: string
   createdAt: Date
-  amountCandidatures: number
 }
 
 export class CompanyWithJobs extends ValueObject<CompanyWithJobsProps> {
@@ -44,10 +43,6 @@ export class CompanyWithJobs extends ValueObject<CompanyWithJobsProps> {
 
   get createdAt() {
     return this.props.createdAt
-  }
-
-  get amountCandidatures() {
-    return this.props.amountCandidatures
   }
 
   static create(props: CompanyWithJobsProps) {

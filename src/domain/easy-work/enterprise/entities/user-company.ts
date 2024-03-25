@@ -18,8 +18,16 @@ export class Company extends Entity<CompanyProps> {
     return this.props.city
   }
 
+  set city(city: string | null) {
+    this.props.city = city
+  }
+
   get state() {
     return this.props.state
+  }
+
+  set state(state: string | null) {
+    this.props.state = state
   }
 
   get site_url() {

@@ -6,6 +6,8 @@ import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
 import { JobWithCompany } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-company'
 import { PrismaJobWithCompanyMapper } from '../mappers/prisma-job-with-company-mapper'
+import { JobWithCandidaturesAmount } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-candidatures-amount'
+import { PrismaJobWithCandidaturesAmountMapper } from '../mappers/prisma-job-with-candidatures-amount'
 
 @Injectable()
 export class PrismaJobsRepository implements JobsRepository {
@@ -68,5 +70,22 @@ export class PrismaJobsRepository implements JobsRepository {
     })
 
     return jobs.map((job) => PrismaJobMapper.toDomain(job))
+  }
+
+  async findManyWithCandidaturesAmount(
+    companyId: string,
+  ): Promise<JobWithCandidaturesAmount[]> {
+    const companyJobs = await this.prisma.job.findMany({
+      where: {
+        companyId,
+      },
+      include: {
+        candidature: true,
+      },
+    })
+
+    return companyJobs.map((job) =>
+      PrismaJobWithCandidaturesAmountMapper.toDomain(job),
+    )
   }
 }
