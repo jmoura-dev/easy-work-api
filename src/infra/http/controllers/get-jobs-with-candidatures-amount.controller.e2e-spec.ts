@@ -89,7 +89,7 @@ describe('Get Jobs With Candidatures Amount Controller(E2E)', () => {
       jobsWithCandidaturesAmount: [
         expect.objectContaining({
           id: job.id.toString(),
-          title: 'Desenvolvedor backend',
+          title: 'desenvolvedor backend',
           description: 'Vaga disponível para desenvolvedor backend',
           candidaturesAmount: 2,
         }),

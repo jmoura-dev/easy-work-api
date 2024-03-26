@@ -11,6 +11,11 @@ export interface JobWithCandidaturesAmountProps {
   hoursPerWeek: number
   createdAt: Date
   amountCandidatures: number
+  candidatures: {
+    userId: string
+    userName: string
+    occupation_area: string
+  }[]
 }
 
 export class JobWithCandidaturesAmount extends ValueObject<JobWithCandidaturesAmountProps> {
@@ -48,6 +53,10 @@ export class JobWithCandidaturesAmount extends ValueObject<JobWithCandidaturesAm
 
   get amountCandidatures() {
     return this.props.amountCandidatures
+  }
+
+  get candidatures() {
+    return this.props.candidatures
   }
 
   static create(props: JobWithCandidaturesAmountProps) {

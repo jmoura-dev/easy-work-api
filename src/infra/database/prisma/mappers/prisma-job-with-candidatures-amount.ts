@@ -1,12 +1,24 @@
 import {
   Job as PrismaJob,
-  Candidature as PrismaCandidature,
+  Developer as PrismaDeveloper,
+  User as PrismaUser,
 } from '@prisma/client'
 import { JobWithCandidaturesAmount } from '@/domain/easy-work/enterprise/entities/value-objects/job-with-candidatures-amount'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 type PrismaJobWithCandidaturesAmountProps = PrismaJob & {
-  candidature: PrismaCandidature[]
+  candidature: ({
+    developer: PrismaDeveloper & {
+      user: PrismaUser
+    }
+  } & {
+    id: string
+    developerId: string
+    jobId: string
+    status: string
+    createdAt: Date
+    updatedAt: Date | null
+  })[]
 }
 
 export class PrismaJobWithCandidaturesAmountMapper {
@@ -23,6 +35,13 @@ export class PrismaJobWithCandidaturesAmountMapper {
       hoursPerWeek: raw.hoursPerWeek,
       createdAt: raw.createdAt,
       amountCandidatures: raw.candidature.length,
+      candidatures: raw.candidature.map((item) => {
+        return {
+          userId: item.developer.userId,
+          userName: item.developer.user.name,
+          occupation_area: item.developer.occupation_area,
+        }
+      }),
     })
   }
 }

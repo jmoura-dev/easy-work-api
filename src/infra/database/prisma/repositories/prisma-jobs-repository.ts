@@ -80,12 +80,22 @@ export class PrismaJobsRepository implements JobsRepository {
         companyId,
       },
       include: {
-        candidature: true,
+        candidature: {
+          include: {
+            developer: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
       },
     })
 
-    return companyJobs.map((job) =>
+    const jobs = companyJobs.map((job) =>
       PrismaJobWithCandidaturesAmountMapper.toDomain(job),
     )
+
+    return jobs
   }
 }

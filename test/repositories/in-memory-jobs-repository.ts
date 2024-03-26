@@ -70,6 +70,7 @@ export class InMemoryJobsRepository implements JobsRepository {
         hoursPerWeek: item.hoursPerWeek,
         createdAt: item.created_at,
         amountCandidatures: 3,
+        candidatures: [],
       })
     })
     return jobs
