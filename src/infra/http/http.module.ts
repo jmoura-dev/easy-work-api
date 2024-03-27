@@ -52,6 +52,8 @@ import { GetCompanyDetailsController } from './controllers/get-company-details.c
 import { GetCompanyDetailsUseCase } from '@/domain/easy-work/application/use-cases/get-company-details'
 import { GetJobsWithCandidaturesAmountController } from './controllers/get-jobs-with-candidatures-amount.controller'
 import { GetJobWithCandidaturesAmountUseCase } from '@/domain/easy-work/application/use-cases/get-job-with-candidatures-amount'
+import { GetCandidatureByIdController } from './controllers/get-candidature-by-id.controller'
+import { GetCandidatureByIdUseCase } from '@/domain/easy-work/application/use-cases/get-candidature-by-id'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -81,6 +83,7 @@ import { GetJobWithCandidaturesAmountUseCase } from '@/domain/easy-work/applicat
     GetAllTechnologiesController,
     GetCompanyDetailsController,
     GetJobsWithCandidaturesAmountController,
+    GetCandidatureByIdController,
   ],
   providers: [
     CreateUserUseCase,
@@ -108,6 +111,7 @@ import { GetJobWithCandidaturesAmountUseCase } from '@/domain/easy-work/applicat
     GetAllTechnologiesUseCase,
     GetCompanyDetailsUseCase,
     GetJobWithCandidaturesAmountUseCase,
+    GetCandidatureByIdUseCase,
   ],
 })
 export class HttpModule {}
