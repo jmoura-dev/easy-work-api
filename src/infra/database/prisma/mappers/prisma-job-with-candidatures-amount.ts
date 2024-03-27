@@ -37,6 +37,8 @@ export class PrismaJobWithCandidaturesAmountMapper {
       amountCandidatures: raw.candidature.length,
       candidatures: raw.candidature.map((item) => {
         return {
+          candidatureId: new UniqueEntityID(item.id),
+          status: item.status,
           userId: item.developer.userId,
           userName: item.developer.user.name,
           occupation_area: item.developer.occupation_area,

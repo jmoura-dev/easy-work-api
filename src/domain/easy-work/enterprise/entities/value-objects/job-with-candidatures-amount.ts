@@ -12,6 +12,8 @@ export interface JobWithCandidaturesAmountProps {
   createdAt: Date
   amountCandidatures: number
   candidatures: {
+    candidatureId: UniqueEntityID
+    status: string
     userId: string
     userName: string
     occupation_area: string

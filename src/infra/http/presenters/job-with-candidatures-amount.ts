@@ -12,7 +12,12 @@ export class JobWithCandidaturesAmountPresenter {
       hoursPerWeek: job.hoursPerWeek,
       created_at: job.createdAt,
       candidaturesAmount: job.amountCandidatures,
-      candidatures: job.candidatures,
+      candidatures: job.candidatures.map((candidature) => {
+        return {
+          ...candidature,
+          candidatureId: candidature.candidatureId.toString(),
+        }
+      }),
     }
   }
 }
