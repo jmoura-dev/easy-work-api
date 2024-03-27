@@ -1,7 +1,5 @@
 import { GetDeveloperDetailsUseCase } from '@/domain/easy-work/application/use-cases/get-developer-details'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { Controller, Get, NotAcceptableException } from '@nestjs/common'
+import { Controller, Get, NotAcceptableException, Param } from '@nestjs/common'
 import { DeveloperWithTechnologiesPresenter } from '../presenters/developer-with-technologies-presenter'
 
 @Controller('/developers/:user_id/details')
@@ -9,9 +7,7 @@ export class GetDeveloperDetailsController {
   constructor(private getDeveloperDetails: GetDeveloperDetailsUseCase) {}
 
   @Get()
-  async handle(@CurrentUser() user: UserPayload) {
-    const { sub: userId } = user
-
+  async handle(@Param('user_id') userId: string) {
     const result = await this.getDeveloperDetails.execute({
       userId,
     })

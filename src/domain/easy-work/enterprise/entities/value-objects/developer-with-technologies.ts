@@ -10,6 +10,9 @@ export interface DeveloperWithTechnologiesProps {
   available_for_contract: boolean
   about: string | null
   userName: string
+  linkedin: string | null
+  github: string | null
+  portfolio: string | null
   techs: Technology[]
 }
 
@@ -40,6 +43,18 @@ export class DeveloperWithTechnologies extends ValueObject<DeveloperWithTechnolo
 
   get userName() {
     return this.props.userName
+  }
+
+  get linkedin() {
+    return this.props.linkedin
+  }
+
+  get github() {
+    return this.props.github
+  }
+
+  get portfolio() {
+    return this.props.portfolio
   }
 
   get techs() {

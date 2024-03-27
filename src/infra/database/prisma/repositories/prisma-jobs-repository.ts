@@ -90,6 +90,9 @@ export class PrismaJobsRepository implements JobsRepository {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     const jobs = companyJobs.map((job) =>

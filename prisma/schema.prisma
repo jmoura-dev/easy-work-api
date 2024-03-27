@@ -29,6 +29,9 @@ model Developer {
   occupation_area        String
   available_for_contract Boolean?              @default(false)
   price_per_hour         Decimal?              @db.Decimal(6, 2)
+  linkedin               String?
+  github                 String?
+  portfolio              String?
   user                   User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   candidature            Candidature[]
   developerTechnology    DeveloperTechnology[]

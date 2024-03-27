@@ -7,6 +7,9 @@ export interface DeveloperProps {
   price_per_hour: number | null
   occupation_area: string
   available_for_contract: boolean
+  linkedin: string | null
+  github: string | null
+  portfolio: string | null
 }
 
 export class Developer extends Entity<DeveloperProps> {
@@ -38,10 +41,38 @@ export class Developer extends Entity<DeveloperProps> {
     this.props.available_for_contract = available_for_contract
   }
 
+  get linkedin() {
+    return this.props.linkedin
+  }
+
+  set linkedin(linkedin: string | null) {
+    this.props.linkedin = linkedin
+  }
+
+  get github() {
+    return this.props.github
+  }
+
+  set github(github: string | null) {
+    this.props.github = github
+  }
+
+  get portfolio() {
+    return this.props.portfolio
+  }
+
+  set portfolio(portfolio: string | null) {
+    this.props.portfolio = portfolio
+  }
+
   static create(
     props: Optional<
       DeveloperProps,
-      'price_per_hour' | 'available_for_contract'
+      | 'price_per_hour'
+      | 'available_for_contract'
+      | 'linkedin'
+      | 'github'
+      | 'portfolio'
     >,
     id?: UniqueEntityID,
   ) {
@@ -50,6 +81,9 @@ export class Developer extends Entity<DeveloperProps> {
         ...props,
         price_per_hour: props.price_per_hour ?? null,
         available_for_contract: props.available_for_contract ?? false,
+        linkedin: props.linkedin ?? null,
+        github: props.github ?? null,
+        portfolio: props.portfolio ?? null,
       },
       id,
     )

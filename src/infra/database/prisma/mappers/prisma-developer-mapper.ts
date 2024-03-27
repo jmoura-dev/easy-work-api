@@ -10,6 +10,9 @@ export class PrismaDeveloperMapper {
         occupation_area: raw.occupation_area,
         price_per_hour: raw.price_per_hour ? Number(raw.price_per_hour) : null,
         available_for_contract: raw.available_for_contract ?? false,
+        linkedin: raw.linkedin ?? null,
+        github: raw.github ?? null,
+        portfolio: raw.portfolio ?? null,
       },
       new UniqueEntityID(raw.id),
     )
@@ -22,6 +25,9 @@ export class PrismaDeveloperMapper {
       occupation_area: developer.occupation_area,
       price_per_hour: developer.price_per_hour,
       available_for_contract: developer.available_for_contract,
+      linkedin: developer.linkedin,
+      github: developer.github,
+      portfolio: developer.portfolio,
     }
   }
 }
