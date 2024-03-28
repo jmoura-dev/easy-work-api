@@ -13,6 +13,15 @@ import { InMemoryCandidaturesRepository } from 'test/repositories/in-memory-Cand
 import { waitFor } from 'test/utils/wait-for'
 import { InMemoryJobsRepository } from 'test/repositories/in-memory-jobs-repository'
 import { makeJob } from 'test/factories/make-job'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
+
+let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
 
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let inMemoryCandidaturesRepository: InMemoryCandidaturesRepository
@@ -27,7 +36,22 @@ let sendNotificationExecuteSpy: MockInstance<
 
 describe('On change status', () => {
   beforeEach(() => {
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
     inMemoryCandidaturesRepository = new InMemoryCandidaturesRepository()
     inMemoryJobsRepository = new InMemoryJobsRepository()
 

@@ -27,4 +27,12 @@ export class InMemoryNotificationsRepository
   async create(notification: Notification) {
     this.items.push(notification)
   }
+
+  async findManyByDeveloperId(id: string): Promise<Notification[]> {
+    const notifications = this.items.filter(
+      (item) => item.developerId.toString() === id,
+    )
+
+    return notifications
+  }
 }

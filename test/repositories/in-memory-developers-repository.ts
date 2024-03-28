@@ -119,6 +119,9 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
           occupation_area: developer.occupation_area,
           available_for_contract: developer.available_for_contract,
           price_per_hour: developer.price_per_hour,
+          linkedin: developer.linkedin,
+          github: developer.github,
+          portfolio: developer.portfolio,
           techs: technologies,
         })
       })
@@ -149,6 +152,9 @@ export class InMemoryDevelopersRepository implements DevelopersRepository {
       available_for_contract: developer.available_for_contract,
       occupation_area: developer.occupation_area,
       price_per_hour: developer.price_per_hour,
+      linkedin: developer.linkedin,
+      github: developer.github,
+      portfolio: developer.portfolio,
       techs: [],
     })
 
