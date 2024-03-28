@@ -40,4 +40,16 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
       data,
     })
   }
+
+  async findManyByDeveloperId(id: string): Promise<Notification[]> {
+    const notifications = await this.prisma.notification.findMany({
+      where: {
+        recipientId: id,
+      },
+    })
+
+    return notifications.map((notification) =>
+      PrismaNotificationMapper.toDomain(notification),
+    )
+  }
 }

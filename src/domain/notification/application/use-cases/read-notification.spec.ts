@@ -6,18 +6,39 @@ import { InMemoryDevelopersRepository } from 'test/repositories/in-memory-develo
 import { makeUser } from 'test/factories/make-user'
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
 import { makeDeveloper } from 'test/factories/make-developer'
+import { InMemoryCompaniesRepository } from 'test/repositories/in-memory-companies-repository'
+import { InMemoryDeveloperTechnologiesRepository } from 'test/repositories/in-memory-developer-technologies-repository'
+import { InMemoryTechnologiesRepository } from 'test/repositories/in-memory-technologies-repository'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+let inMemoryDeveloperTechnologiesRepository: InMemoryDeveloperTechnologiesRepository
+let inMemoryTechnologiesRepository: InMemoryTechnologiesRepository
+
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let inMemoryDevelopersRepository: InMemoryDevelopersRepository
 let sut: ReadNotificationUseCase
 
 describe('Read Notification', () => {
   beforeEach(() => {
-    inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryUsersRepository = new InMemoryUsersRepository(
+      inMemoryDevelopersRepository,
+      inMemoryCompaniesRepository,
+    )
+    inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+    inMemoryTechnologiesRepository = new InMemoryTechnologiesRepository()
+    inMemoryDeveloperTechnologiesRepository =
+      new InMemoryDeveloperTechnologiesRepository(
+        inMemoryTechnologiesRepository,
+      )
+
+    inMemoryDevelopersRepository = new InMemoryDevelopersRepository(
+      inMemoryUsersRepository,
+      inMemoryDeveloperTechnologiesRepository,
+      inMemoryTechnologiesRepository,
+    )
 
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
-    inMemoryDevelopersRepository = new InMemoryDevelopersRepository()
     sut = new ReadNotificationUseCase(
       inMemoryNotificationsRepository,
       inMemoryDevelopersRepository,

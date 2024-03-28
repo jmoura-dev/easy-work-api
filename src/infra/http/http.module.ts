@@ -54,6 +54,8 @@ import { GetJobsWithCandidaturesAmountController } from './controllers/get-jobs-
 import { GetJobWithCandidaturesAmountUseCase } from '@/domain/easy-work/application/use-cases/get-job-with-candidatures-amount'
 import { GetCandidatureByIdController } from './controllers/get-candidature-by-id.controller'
 import { GetCandidatureByIdUseCase } from '@/domain/easy-work/application/use-cases/get-candidature-by-id'
+import { GetNotificationsByUserIdController } from './controllers/get-notifications-by-user-id.controller'
+import { GetNotificationsUseCase } from '@/domain/notification/application/use-cases/get-notifications-by-recipient-id'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -84,6 +86,7 @@ import { GetCandidatureByIdUseCase } from '@/domain/easy-work/application/use-ca
     GetCompanyDetailsController,
     GetJobsWithCandidaturesAmountController,
     GetCandidatureByIdController,
+    GetNotificationsByUserIdController,
   ],
   providers: [
     CreateUserUseCase,
@@ -112,6 +115,7 @@ import { GetCandidatureByIdUseCase } from '@/domain/easy-work/application/use-ca
     GetCompanyDetailsUseCase,
     GetJobWithCandidaturesAmountUseCase,
     GetCandidatureByIdUseCase,
+    GetNotificationsUseCase,
   ],
 })
 export class HttpModule {}
