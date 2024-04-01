@@ -6,16 +6,14 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { UserFactory } from 'test/factories/make-user'
 import { DeveloperFactory } from 'test/factories/make-developer'
-import { JwtService } from '@nestjs/jwt'
 import { TechnologyFactory } from 'test/factories/make-technology'
 
-describe('Create Company Controller(E2E)', () => {
+describe('Add technology to developer Controller(E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let userFactory: UserFactory
   let developerFactory: DeveloperFactory
   let technologyFactory: TechnologyFactory
-  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -25,7 +23,6 @@ describe('Create Company Controller(E2E)', () => {
 
     app = moduleRef.createNestApplication()
     prisma = moduleRef.get(PrismaService)
-    jwt = moduleRef.get(JwtService)
 
     userFactory = moduleRef.get(UserFactory)
     developerFactory = moduleRef.get(DeveloperFactory)
@@ -34,22 +31,22 @@ describe('Create Company Controller(E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /developer-technology', async () => {
+  test('[POST] /developer-technology/:user_id', async () => {
     const user = await userFactory.makePrismaUser()
-    const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const technology = await technologyFactory.makePrismaTechnology({
+    await technologyFactory.makePrismaTechnology({
       name: 'Typescript',
     })
     const developer = await developerFactory.makePrismaDeveloper({
       userId: user.id,
     })
 
+    const userId = user.id.toString()
+
     const response = await request(app.getHttpServer())
-      .post('/developer-technology')
-      .set('Authorization', `Bearer ${accessToken}`)
+      .post(`/developer-technology/${userId}`)
       .send({
-        technologyId: technology.id.toString(),
+        technologyName: 'Typescript',
       })
 
     expect(response.statusCode).toEqual(201)

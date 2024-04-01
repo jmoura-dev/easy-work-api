@@ -46,6 +46,9 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
       where: {
         recipientId: id,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return notifications.map((notification) =>

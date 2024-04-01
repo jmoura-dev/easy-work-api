@@ -40,6 +40,7 @@ describe('Add technology to developer Use Case', () => {
     sut = new AddTechnologyToDeveloperUseCase(
       inMemoryDeveloperTechnologiesRepository,
       inMemoryDevelopersRepository,
+      inMemoryTechnologiesRepository,
     )
   })
 
@@ -51,14 +52,16 @@ describe('Add technology to developer Use Case', () => {
       },
       new UniqueEntityID('developer-01'),
     )
-    const technology = makeTechnology()
+    const technology = makeTechnology({
+      name: 'Typescript',
+    })
 
     inMemoryDevelopersRepository.items.push(developer)
     inMemoryTechnologiesRepository.items.push(technology)
 
     const result = await sut.execute({
       userId: user.id.toString(),
-      technologyId: technology.id.toString(),
+      technologyName: 'Typescript',
     })
 
     expect(result.isRight()).toBe(true)
@@ -69,6 +72,7 @@ describe('Add technology to developer Use Case', () => {
 
   it('should not be able to add repeated technology to the same developer ', async () => {
     const user = makeUser()
+    inMemoryUsersRepository.items.push(user)
 
     const developer = makeDeveloper(
       {
@@ -76,18 +80,23 @@ describe('Add technology to developer Use Case', () => {
       },
       new UniqueEntityID('developer-01'),
     )
-    const technology = makeTechnology()
+    inMemoryDevelopersRepository.items.push(developer)
+
+    const technology = makeTechnology({
+      name: 'Typescript',
+    })
+    inMemoryTechnologiesRepository.items.push(technology)
+
     const developerTechnology = makeDeveloperTechnology({
       developerId: developer.id,
       technologyId: technology.id,
     })
 
-    inMemoryDevelopersRepository.items.push(developer)
     inMemoryDeveloperTechnologiesRepository.items.push(developerTechnology)
 
     const result = await sut.execute({
       userId: user.id.toString(),
-      technologyId: technology.id.toString(),
+      technologyName: 'Typescript',
     })
 
     expect(result.isLeft()).toBe(true)

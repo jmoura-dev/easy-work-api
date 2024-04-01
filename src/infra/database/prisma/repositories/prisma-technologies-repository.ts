@@ -17,7 +17,7 @@ export class PrismaTechnologiesRepository implements TechnologiesRepository {
   }
 
   async findByName(name: string): Promise<Technology | null> {
-    const technology = await this.prisma.technology.findFirst({
+    const technology = await this.prisma.technology.findUnique({
       where: {
         name,
       },

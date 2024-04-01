@@ -70,8 +70,6 @@ describe('Get notifications Use case', () => {
       recipientId: user.id.toString(),
     })
 
-    console.log(result.value)
-
     expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
       notifications: [

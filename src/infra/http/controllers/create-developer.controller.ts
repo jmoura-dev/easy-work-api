@@ -16,6 +16,9 @@ const createBodySchema = z.object({
   price_per_hour: z.number().optional(),
   occupation_area: z.string(),
   available_for_contract: z.boolean().optional().default(false),
+  linkedin: z.string().optional(),
+  github: z.string().optional(),
+  portfolio: z.string().optional(),
 })
 
 const zodValidationPipe = new ZodValidationPipe(createBodySchema)
@@ -29,14 +32,24 @@ export class CreateDeveloperController {
   @Post()
   @Public()
   async create(@Body(zodValidationPipe) body: CreateBodySchema) {
-    const { userId, price_per_hour, occupation_area, available_for_contract } =
-      body
+    const {
+      userId,
+      price_per_hour,
+      occupation_area,
+      available_for_contract,
+      linkedin,
+      github,
+      portfolio,
+    } = body
 
     const result = await this.createDeveloper.execute({
       userId,
       price_per_hour,
       occupation_area,
       available_for_contract,
+      linkedin,
+      github,
+      portfolio,
     })
 
     if (result.isLeft()) {

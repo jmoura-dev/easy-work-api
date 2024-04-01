@@ -19,8 +19,8 @@ export class ReadNotificationController {
   @Patch()
   @HttpCode(204)
   async handle(
-    @CurrentUser() user: UserPayload,
     @Param('notification_id') notificationId: string,
+    @CurrentUser() user: UserPayload,
   ) {
     const { sub: userId } = user
 

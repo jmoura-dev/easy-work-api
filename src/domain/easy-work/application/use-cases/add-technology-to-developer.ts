@@ -6,10 +6,11 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { DevelopersRepository } from '../repositories/developers-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { Injectable } from '@nestjs/common'
+import { TechnologiesRepository } from '../repositories/technologies-repository'
 
 interface AddTechnologyToDeveloperUseCaseRequest {
   userId: string
-  technologyId: string
+  technologyName: string
 }
 
 type AddTechnologyToDeveloperUseCaseResponse = Either<
@@ -22,17 +23,27 @@ export class AddTechnologyToDeveloperUseCase {
   constructor(
     private developerTechnologiesRepository: DeveloperTechnologiesRepository,
     private developersRepository: DevelopersRepository,
+    private technologiesRepository: TechnologiesRepository,
   ) {}
 
   async execute({
     userId,
-    technologyId,
+    technologyName,
   }: AddTechnologyToDeveloperUseCaseRequest): Promise<AddTechnologyToDeveloperUseCaseResponse> {
     const developer = await this.developersRepository.findByUserId(userId)
 
     if (!developer) {
       return left(new NotAllowedError())
     }
+
+    const technology =
+      await this.technologiesRepository.findByName(technologyName)
+
+    if (!technology) {
+      return left(new NotAllowedError())
+    }
+
+    const technologyId = technology.id.toString()
 
     const developerTechnologyArray =
       await this.developerTechnologiesRepository.findManyByTechnologyId(

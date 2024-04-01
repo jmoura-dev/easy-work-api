@@ -11,6 +11,9 @@ interface CreateDeveloperUseCaseRequest {
   price_per_hour?: number
   occupation_area: string
   available_for_contract?: boolean
+  linkedin?: string
+  github?: string
+  portfolio?: string
 }
 
 type CreateDeveloperUseCaseResponse = Either<NotAllowedError, null>
@@ -27,12 +30,18 @@ export class CreateDeveloperUseCase {
     price_per_hour,
     occupation_area,
     available_for_contract,
+    linkedin,
+    github,
+    portfolio,
   }: CreateDeveloperUseCaseRequest): Promise<CreateDeveloperUseCaseResponse> {
     const developer = Developer.create({
       userId: new UniqueEntityID(userId),
       available_for_contract,
       occupation_area,
       price_per_hour,
+      linkedin,
+      portfolio,
+      github,
     })
 
     const doesUserExists = await this.usersRepository.findById(userId)

@@ -1,5 +1,6 @@
 import { InvalidAvatarTypeError } from '@/domain/easy-work/application/use-cases/errors/invalid-avatar-type-error'
 import { UploadAndCreateAvatarUseCase } from '@/domain/easy-work/application/use-cases/upload-and-create-avatar'
+import { Public } from '@/infra/auth/public'
 import {
   BadRequestException,
   Controller,
@@ -17,6 +18,7 @@ export class UploadAvatarController {
   constructor(private uploadAndCreateAvatar: UploadAndCreateAvatarUseCase) {}
 
   @Post()
+  @Public()
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile(

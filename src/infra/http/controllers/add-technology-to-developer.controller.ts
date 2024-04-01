@@ -5,40 +5,40 @@ import {
   ConflictException,
   Controller,
   NotAcceptableException,
+  Param,
   Post,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { TechnologyAlreadyAddedInTheDeveloper } from '@/domain/easy-work/application/use-cases/errors/technology-already-added-in-the-developer.erro'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { Public } from '@/infra/auth/public'
 
 const createBodySchema = z.object({
-  technologyId: z.string(),
+  technologyName: z.string(),
 })
 
 const zodValidationPipe = new ZodValidationPipe(createBodySchema)
 
 type CreateBodySchema = z.infer<typeof createBodySchema>
 
-@Controller('/developer-technology')
+@Controller('/developer-technology/:user_id')
 export class AddTechnologyToDeveloperController {
   constructor(
     private addTechnologyToDeveloper: AddTechnologyToDeveloperUseCase,
   ) {}
 
   @Post()
+  @Public()
   async handle(
-    @CurrentUser() user: UserPayload,
+    @Param('user_id') userId: string,
     @Body(zodValidationPipe) body: CreateBodySchema,
   ) {
-    const { sub: userId } = user
-    const { technologyId } = body
+    const { technologyName } = body
 
     const result = await this.addTechnologyToDeveloper.execute({
       userId,
-      technologyId,
+      technologyName,
     })
 
     if (result.isLeft()) {
