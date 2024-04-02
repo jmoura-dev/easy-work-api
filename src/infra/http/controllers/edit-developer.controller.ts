@@ -17,6 +17,9 @@ const editDeveloperBodySchema = z.object({
   price_per_hour: z.number().optional(),
   occupation_area: z.string().optional(),
   available_for_contract: z.boolean().optional(),
+  linkedin: z.string().optional(),
+  github: z.string().optional(),
+  portfolio: z.string().optional(),
 })
 
 const zodValidationPipe = new ZodValidationPipe(editDeveloperBodySchema)
@@ -34,13 +37,23 @@ export class EditDeveloperController {
     @Body(zodValidationPipe) body: EditDeveloperBodySchema,
   ) {
     const { sub: userId } = user
-    const { price_per_hour, occupation_area, available_for_contract } = body
+    const {
+      price_per_hour,
+      occupation_area,
+      available_for_contract,
+      linkedin,
+      github,
+      portfolio,
+    } = body
 
     const result = await this.editDeveloperData.execute({
       userId,
       price_per_hour,
       occupation_area,
       available_for_contract,
+      linkedin,
+      github,
+      portfolio,
     })
 
     if (result.isLeft()) {

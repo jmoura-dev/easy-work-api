@@ -9,6 +9,9 @@ interface EditDeveloperDataUseCaseRequest {
   price_per_hour?: number
   occupation_area?: string
   available_for_contract?: boolean
+  linkedin?: string
+  github?: string
+  portfolio?: string
 }
 
 type EditDeveloperDataUseCaseResponse = Either<
@@ -27,6 +30,9 @@ export class EditDeveloperDataUseCase {
     price_per_hour,
     occupation_area,
     available_for_contract,
+    linkedin,
+    github,
+    portfolio,
   }: EditDeveloperDataUseCaseRequest): Promise<EditDeveloperDataUseCaseResponse> {
     const developer = await this.developersRepository.findByUserId(userId)
 
@@ -38,6 +44,9 @@ export class EditDeveloperDataUseCase {
     developer.occupation_area = occupation_area ?? developer.occupation_area
     developer.available_for_contract =
       available_for_contract ?? developer.available_for_contract
+    developer.linkedin = linkedin ?? developer.linkedin
+    developer.github = github ?? developer.github
+    developer.portfolio = portfolio ?? developer.portfolio
 
     await this.developersRepository.save(developer)
 

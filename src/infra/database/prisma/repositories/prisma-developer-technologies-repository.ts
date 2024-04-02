@@ -1,4 +1,7 @@
-import { DeveloperTechnologiesRepository } from '@/domain/easy-work/application/repositories/developer-technologies-repository'
+import {
+  DeveloperTechnologiesRepository,
+  FindDeveloperTechnologyByParamsProps,
+} from '@/domain/easy-work/application/repositories/developer-technologies-repository'
 import { DeveloperTechnology } from '@/domain/easy-work/enterprise/entities/developer-technology'
 import { Technology } from '@/domain/easy-work/enterprise/entities/technology'
 import { PrismaService } from '../prisma.service'
@@ -58,5 +61,32 @@ export class PrismaDeveloperTechnologiesRepository
     )
 
     return technologies.map((item) => PrismaTechnologyMapper.toDomain(item))
+  }
+
+  async findById({
+    technologyId,
+    developerId,
+  }: FindDeveloperTechnologyByParamsProps): Promise<DeveloperTechnology | null> {
+    const developerTechnology = await this.prisma.developerTechnology.findFirst(
+      {
+        where: {
+          AND: [{ technologyId }, { developerId }],
+        },
+      },
+    )
+
+    if (!developerTechnology) {
+      return null
+    }
+
+    return PrismaDeveloperTechnologyMapper.toDomain(developerTechnology)
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.developerTechnology.delete({
+      where: {
+        id,
+      },
+    })
   }
 }

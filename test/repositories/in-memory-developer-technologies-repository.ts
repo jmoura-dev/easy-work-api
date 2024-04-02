@@ -1,4 +1,7 @@
-import { DeveloperTechnologiesRepository } from '@/domain/easy-work/application/repositories/developer-technologies-repository'
+import {
+  DeveloperTechnologiesRepository,
+  FindDeveloperTechnologyByParamsProps,
+} from '@/domain/easy-work/application/repositories/developer-technologies-repository'
 import { DeveloperTechnology } from '@/domain/easy-work/enterprise/entities/developer-technology'
 import { InMemoryTechnologiesRepository } from './in-memory-technologies-repository'
 import { Technology } from '@/domain/easy-work/enterprise/entities/technology'
@@ -44,5 +47,26 @@ export class InMemoryDeveloperTechnologiesRepository
     )) as Technology[]
 
     return technologies
+  }
+
+  async findById({
+    technologyId,
+    developerId,
+  }: FindDeveloperTechnologyByParamsProps): Promise<DeveloperTechnology | null> {
+    const developerTechnology = this.items.find(
+      (item) =>
+        item.technologyId.toString() === technologyId &&
+        item.developerId.toString() === developerId,
+    )
+
+    if (!developerTechnology) {
+      return null
+    }
+
+    return developerTechnology
+  }
+
+  async delete(id: string): Promise<void> {
+    this.items = this.items.filter((item) => item.id.toString() !== id)
   }
 }
