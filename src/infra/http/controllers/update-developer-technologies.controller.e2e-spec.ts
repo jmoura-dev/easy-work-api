@@ -76,7 +76,7 @@ describe('Update Developer Technologies Controller(E2E)', () => {
       .put(`/developer-technology/${userId}/update`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        techs: 'Java,Nestjs',
+        techs: [{ name: 'Java' }, { name: 'Nestjs' }],
       })
 
     expect(response.statusCode).toEqual(201)

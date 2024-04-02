@@ -82,9 +82,16 @@ describe('Update developer technologies', () => {
     inMemoryDeveloperTechnologiesRepository.items.push(developerTechnology02)
     inMemoryDeveloperTechnologiesRepository.items.push(developerTechnology03)
 
+    const techs = [
+      { name: 'Docker' },
+      { name: 'Typescript' },
+      { name: 'Next' },
+      { name: 'React' },
+    ]
+
     const result = await sut.execute({
       userId: user.id.toString(),
-      techs: 'Docker,Typescript,Next,React',
+      techs,
     })
 
     expect(result.isRight()).toBe(true)
@@ -131,7 +138,7 @@ describe('Update developer technologies', () => {
 
     const result = await sut.execute({
       userId: 'invalid-user-ID',
-      techs: 'Docker,Typescript',
+      techs: [{ name: 'Docker' }, { name: 'Typescript' }],
     })
 
     expect(result.isLeft()).toBe(true)

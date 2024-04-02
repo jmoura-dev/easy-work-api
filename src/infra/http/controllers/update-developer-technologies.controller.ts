@@ -13,7 +13,7 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
-const techs = z.string().default('')
+const techs = z.array(z.object({ name: z.string() })).default([])
 
 const zodValidationPipe = new ZodValidationPipe(techs)
 type Techs = z.infer<typeof techs>

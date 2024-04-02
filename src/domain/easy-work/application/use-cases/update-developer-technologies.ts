@@ -10,7 +10,9 @@ import { Injectable } from '@nestjs/common'
 
 interface UpdateDeveloperTechnologiesRequest {
   userId: string
-  techs: string
+  techs: {
+    name: string
+  }[]
 }
 
 type UpdateDeveloperTechnologiesResponse = Either<
@@ -37,27 +39,23 @@ export class UpdateDeveloperTechnologiesUseCase {
     }
     const developerId = developer.id.toString()
 
-    const techsStringToArray = (techsString: string): string[] => {
-      if (!techsString) return []
-      return techsString.trim().split(',')
-    }
-    const techsArray = techsStringToArray(techs)
-
     const technologiesByDeveloper =
       await this.developerTechnologiesRepository.findManyByDeveloperId(
         developerId,
       )
 
-    const newTechnologiesToAdd = techsArray.filter((tech) =>
-      technologiesByDeveloper.every((item) => item.name !== tech),
+    const newTechnologiesToAdd = techs.filter((tech) =>
+      technologiesByDeveloper.every((item) => item.name !== tech.name),
     )
 
     const technologiesWithIdToAdd = await Promise.all(
       newTechnologiesToAdd.map(async (tech) => {
-        const isTechValid = await this.technologiesRepository.findByName(tech)
+        const isTechValid = await this.technologiesRepository.findByName(
+          tech.name,
+        )
 
         if (!isTechValid) {
-          throw new TechnologyNotFound(tech)
+          throw new TechnologyNotFound(tech.name)
         }
 
         return isTechValid
@@ -78,7 +76,7 @@ export class UpdateDeveloperTechnologiesUseCase {
     )
 
     const developerTechnologiesToDelete = technologiesByDeveloper.filter(
-      (item) => techsArray.every((tech) => tech !== item.name),
+      (item) => techs.every((tech) => tech.name !== item.name),
     )
 
     const developerTechnologiesWithIdToDelete = await Promise.all(
