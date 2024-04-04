@@ -105,6 +105,7 @@ const data = [
   { name: 'Selenium' },
   { name: 'Cucumber' },
   { name: 'Jasmine' },
+  { name: 'Nodejs' },
 ]
 
 async function main() {
